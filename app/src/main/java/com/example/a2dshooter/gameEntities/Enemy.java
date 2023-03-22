@@ -102,7 +102,7 @@ public class Enemy extends Entity {
     }
 
     public void placeMine(){
-        listOfMines.add(new Bullet(context, this, 0));
+        listOfMines.add(new Bullet(context, this, 0, MAX_MINE_DAMAGE));
     }
 
     public void drawMines(Canvas canvas, GameCamera gameCamera){

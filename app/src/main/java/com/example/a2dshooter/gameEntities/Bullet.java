@@ -12,7 +12,7 @@ public class Bullet extends Entity{
 
     private int damage;
 
-    public Bullet(Context context, Entity entity, double multiplier){
+    public Bullet(Context context, Entity entity, double multiplier, int damage){
         super(
                 context,
                 ContextCompat.getColor(context, R.color.bullet),
@@ -21,7 +21,7 @@ public class Bullet extends Entity{
                 BULLET_RADIUS
         );
 
-        setDamage(MAX_BULLET_DAMAGE);
+        this.damage = damage;
 
         velocityX = entity.getDirectionX() * MAX_SPEED_BULLET * multiplier;
         velocityY = entity.getDirectionY() * MAX_SPEED_BULLET * multiplier;

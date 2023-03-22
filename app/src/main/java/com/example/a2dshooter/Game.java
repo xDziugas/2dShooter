@@ -58,7 +58,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         refreshRates = new RefreshRates(context, gameLoop);
         joystickMovement = new Joystick(330, 700, 120, 60);
         joystickShoot = new Joystick(2000, 700, 120, 60);
-        xpBar = new XpBar(displayMetrics);
 
         //initialize camera
         gameCamera = new GameCamera(displayMetrics.widthPixels, displayMetrics.heightPixels);
@@ -67,7 +66,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player = new Player(context, joystickMovement, joystickShoot, displayMetrics, ContextCompat.getColor(context, R.color.player), gameCamera);
         listOfEnemies.add(new Enemy(context, player, displayMetrics, gameCamera));
 
-
+        xpBar = new XpBar(displayMetrics, player);
 
         setFocusable(true);
     }
@@ -184,10 +183,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         refreshRates.draw(canvas);
         joystickMovement.draw(canvas);
         joystickShoot.draw(canvas);
+        xpBar.draw(canvas);
 
     }
 
-    public void update(Canvas canvas){
+    public void update(){
         if(player.getHealthPoints() <= 0){
             return;
         }
@@ -202,7 +202,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 player.shoot();
             }
 
-            framesToWaitPlayer += framesToWaitMax;
+            framesToWaitPlayer += player.getFireRate();
         }else{
             framesToWaitPlayer--;
         }
@@ -239,7 +239,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 Entity bullet = bulletIterator.next();
                 if(EntityGeneral.isColliding(bullet, enemy)){
 
-                    xpBar.draw(canvas, enemy.getXpOnKill());
+                    xpBar.setCurrentXp(xpBar.getCurrentXp() + enemy.getXpOnKill());
 
                     bulletIterator.remove();
                     iteratorEnemy.remove();
@@ -250,6 +250,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     bulletIterator.remove();
                 }
             }
+
+            bulletIterator = enemy.getMines().iterator();
+            while(bulletIterator.hasNext()){
+                Bullet bullet = bulletIterator.next();
+                if(EntityGeneral.isColliding(bullet, player)){
+
+                    bulletIterator.remove();
+                    player.setHealthPoints(player.getHealthPoints() - bullet.getDamage());
+                    break;
+                }
+
+            }
+
         }
         gameCamera.update(player.getPositionX(), player.getPositionY());
 

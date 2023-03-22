@@ -11,6 +11,7 @@ import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
 import com.example.a2dshooter.gamePanels.Joystick;
+import com.example.a2dshooter.gamePanels.XpBar;
 import com.example.a2dshooter.utils.Util;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class Player extends Entity{
     private boolean ableToShoot = false;
     private final Joystick joystickMovement;
     private final Joystick joystickShoot;
+    private int fireRate = 60; //bullet every X frames
+    private int level = 0;
 
     public final ArrayList<Bullet> listOfBullets = new ArrayList<>();
 
@@ -50,7 +53,7 @@ public class Player extends Entity{
     }
 
     public void shoot(){
-        listOfBullets.add(new Bullet(context, this, 1));
+        listOfBullets.add(new Bullet(context, this, 1, MAX_BULLET_DAMAGE));
     }
 
     public void moveBullets(){
@@ -104,4 +107,19 @@ public class Player extends Entity{
     public void setCanShoot(boolean ableToShoot){
         this.ableToShoot = ableToShoot;
     }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void incLevel() {
+        this.level++;
+        fireRate *= 0.8;
+    }
+
+    public int getFireRate(){
+        return fireRate;
+    }
+
+
 }

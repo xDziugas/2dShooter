@@ -11,6 +11,7 @@ public interface EntityPrimary extends EntityGeneral{
     double BULLET_RADIUS = 10;
     double MAX_SPEED_BULLET = 15;
     int MAX_BULLET_DAMAGE = 60;
+    int MAX_MINE_DAMAGE = 30;
     double SPEED_PIXELS_PER_SECOND = 600.0;
     double MAX_SPEED_PER_FRAME_PLAYER = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     double MAX_SPEED_PER_FRAME_ENEMY = 0.7 * SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;

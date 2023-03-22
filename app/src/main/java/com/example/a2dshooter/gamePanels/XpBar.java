@@ -1,37 +1,44 @@
 package com.example.a2dshooter.gamePanels;
 
-import static android.content.ContentValues.TAG;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
+import com.example.a2dshooter.gameEntities.Player;
 
 public class XpBar {
 
     private final DisplayMetrics displayMetrics;
     private final Paint xpPaint;
     private final Paint borderPaint;
+    private final Paint lvlPaint;
     private float margin = 2;
-    private float barLength = 300;
-    private float barWidth = 200;
-    private float maxXp = 5000;
-    private float currentXp = 2500;
+    private float barLength = 900;
+    private float barWidth = 25;
+    private float[] maxXp = {200, 300, 400, 500, 600, 700, 2000, 3000, 5000, 10000, 15000, 20000};
+    private float currentXp = 0;
+    private Player player;
 
-
-    public XpBar(DisplayMetrics displayMetrics){
+    public XpBar(DisplayMetrics displayMetrics, Player player){
         this.displayMetrics = displayMetrics;
 
         this.xpPaint = new Paint();
-        xpPaint.setColor(Color.GREEN);
+        xpPaint.setColor(Color.BLUE);
+        xpPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         this.borderPaint = new Paint();
-        borderPaint.setColor(Color.RED);
+        borderPaint.setColor(Color.GRAY);
+        borderPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
+        this.lvlPaint = new Paint();
+        lvlPaint.setColor(Color.WHITE);
+        lvlPaint.setTextSize(75);
+
+        this.player = player;
     }
 
-    public void draw(Canvas canvas, int gainXp){
+    public void draw(Canvas canvas){
 
         //draw border
         float borderLeft, borderTop, borderRight, borderBottom;
@@ -50,7 +57,14 @@ public class XpBar {
 
         //draw xp
         float XpLeft, XpTop, XpRight, XpBottom, XpLength, XpWidth;
-        float currentXpPercentage = (currentXp + gainXp) / maxXp;
+        float currentXpPercentage = currentXp / maxXp[player.getLevel()];
+
+        if(currentXp >= maxXp[player.getLevel()]){
+            currentXp -= maxXp[player.getLevel()];
+            if(player.getLevel() < maxXp.length - 1){
+                player.incLevel();
+            }
+        }
 
         XpLength = barLength - 2 * margin;
         XpWidth = barWidth - 2 * margin;
@@ -67,7 +81,16 @@ public class XpBar {
                 xpPaint
         );
 
+        canvas.drawText(String.valueOf(player.getLevel()), borderLeft, borderTop - 50, lvlPaint);
 
-        Log.d(TAG, "draw: Left: " + XpLeft + ", top: " + XpTop + ", right: " + XpRight + ", bottom: " + XpBottom);
     }
+
+    public float getCurrentXp() {
+        return currentXp;
+    }
+
+    public void setCurrentXp(float currentXp) {
+        this.currentXp = currentXp;
+    }
+
 }
