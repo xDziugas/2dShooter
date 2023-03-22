@@ -1,0 +1,258 @@
+package com.example.a2dshooter;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
+import com.example.a2dshooter.gameEntities.Bullet;
+import com.example.a2dshooter.gameEntities.Enemy;
+import com.example.a2dshooter.gameEntities.Entity;
+import com.example.a2dshooter.gameEntities.EntityGeneral;
+import com.example.a2dshooter.gameEntities.Player;
+import com.example.a2dshooter.gamePanels.Joystick;
+import com.example.a2dshooter.gamePanels.RefreshRates;
+import com.example.a2dshooter.gamePanels.XpBar;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Game extends SurfaceView implements SurfaceHolder.Callback {
+
+    private static final int MAX_FRAME_RATE = 60;
+    private final RefreshRates refreshRates;
+    private GameLoop gameLoop;
+    private final Player player;
+    private final ArrayList<Enemy> listOfEnemies = new ArrayList<>();
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    private final Joystick joystickMovement;
+    private final Joystick joystickShoot;
+    private GameCamera gameCamera;
+    private XpBar xpBar;
+
+    private final double GAME_SPEED_MULTIPLIER = 2.1;
+    private final int framesToWaitMax = (int) (MAX_FRAME_RATE / GAME_SPEED_MULTIPLIER);
+
+    private int framesToWaitPlayer = framesToWaitMax;
+    private int framesToWaitEnemy = framesToWaitMax -20;
+
+    public Game(Context context){
+        super(context);
+
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        SurfaceHolder surfaceHolder = getHolder();
+        surfaceHolder.addCallback(this);
+
+        gameLoop = new GameLoop(this, surfaceHolder);
+
+        //game panels
+        refreshRates = new RefreshRates(context, gameLoop);
+        joystickMovement = new Joystick(330, 700, 120, 60);
+        joystickShoot = new Joystick(2000, 700, 120, 60);
+        xpBar = new XpBar(displayMetrics);
+
+        //initialize camera
+        gameCamera = new GameCamera(displayMetrics.widthPixels, displayMetrics.heightPixels);
+
+        //entities
+        player = new Player(context, joystickMovement, joystickShoot, displayMetrics, ContextCompat.getColor(context, R.color.player), gameCamera);
+        listOfEnemies.add(new Enemy(context, player, displayMetrics, gameCamera));
+
+
+
+        setFocusable(true);
+    }
+
+    @Override
+    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        Log.d("Game", "surfaceCreated: ");
+        if(gameLoop.getState().equals(Thread.State.TERMINATED)){
+            gameLoop = new GameLoop(this, surfaceHolder);
+        }
+        gameLoop.startLoop();
+    }
+
+    @Override
+    public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        //todo: kulkas pashalint jei uz ekrano, enemies spawnint uz ekrano
+
+
+        //handle touch event actions
+        switch (event.getActionMasked()){
+
+            case MotionEvent.ACTION_DOWN:
+                int ptrIdx1 = event.findPointerIndex(event.getPointerId(event.getActionIndex()));
+
+                if(joystickShoot.isPressed(event.getX(ptrIdx1), event.getY(ptrIdx1))){
+                    joystickShoot.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
+                    joystickShoot.setIsPressed(true);
+                    player.setCanShoot(true);
+                } else if(joystickMovement.isPressed(event.getX(ptrIdx1), event.getY(ptrIdx1))){
+                    joystickMovement.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
+                    joystickMovement.setIsPressed(true);
+                }
+
+                break;
+
+            case MotionEvent.ACTION_POINTER_DOWN:
+
+                int ptrIdx2 = event.findPointerIndex(event.getPointerId(event.getActionIndex()));
+
+                if(joystickShoot.getIsPressed()){
+                    if(joystickMovement.isPressed(event.getX(ptrIdx2), event.getY(ptrIdx2))){
+                        joystickMovement.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
+                        joystickMovement.setIsPressed(true);
+                    }
+                }else if(joystickMovement.getIsPressed()){
+                    if(joystickShoot.isPressed(event.getX(ptrIdx2), event.getY(ptrIdx2))){
+                        joystickShoot.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
+                        joystickShoot.setIsPressed(true);
+                        player.setCanShoot(true);
+                    }
+                }
+
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                if(joystickMovement.getIsPressed()){
+                    int ptrIdx = event.findPointerIndex(joystickMovement.getJoystickPointerId());
+
+                    joystickMovement.setActuator(event.getX(ptrIdx), event.getY(ptrIdx));
+                }
+
+                if(joystickShoot.getIsPressed()){
+                    int ptrIdx = event.findPointerIndex(joystickShoot.getJoystickPointerId());
+
+                    joystickShoot.setActuator(event.getX(ptrIdx), event.getY(ptrIdx));
+                }
+                break;
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_POINTER_UP:
+                if(joystickMovement.getJoystickPointerId() == event.getPointerId(event.getActionIndex())){
+                    joystickMovement.setIsPressed(false);
+                    joystickMovement.resetActuator();
+                }
+
+                if(joystickShoot.getJoystickPointerId() == event.getPointerId(event.getActionIndex())){
+                    joystickShoot.setIsPressed(false);
+                    joystickShoot.resetActuator();
+                    player.setCanShoot(false);
+                }
+
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void draw(Canvas canvas){
+        super.draw(canvas);
+
+        //draw game objects
+        player.draw(canvas, gameCamera);
+
+
+        for(Enemy enemy : listOfEnemies){
+            enemy.draw(canvas, gameCamera);
+            enemy.drawMines(canvas, gameCamera);
+        }
+
+        player.drawBullets(canvas, gameCamera);
+
+        //draw game panels
+        refreshRates.draw(canvas);
+        joystickMovement.draw(canvas);
+        joystickShoot.draw(canvas);
+
+    }
+
+    public void update(Canvas canvas){
+        if(player.getHealthPoints() <= 0){
+            return;
+        }
+
+        //update game panels
+        joystickShoot.update();
+        joystickMovement.update();
+        player.move();
+
+        if(framesToWaitPlayer <= 0){ //player fire rate (optimize)
+            if(player.canShoot()){
+                player.shoot();
+            }
+
+            framesToWaitPlayer += framesToWaitMax;
+        }else{
+            framesToWaitPlayer--;
+        }
+
+        if(framesToWaitEnemy <= 0){ //enemy fire rate / spawn rate (optimize)
+            for(Enemy enemy : listOfEnemies){
+                enemy.placeMine();
+            }
+
+            framesToWaitEnemy += (framesToWaitMax + 20);
+            listOfEnemies.add(new Enemy(getContext(), player, displayMetrics, gameCamera));
+        }else{
+            framesToWaitEnemy--;
+        }
+
+        for(Enemy enemy : listOfEnemies){
+            enemy.move();
+        }
+
+        player.moveBullets();
+
+        //collisions
+        Iterator<Enemy> iteratorEnemy = listOfEnemies.iterator();
+        while(iteratorEnemy.hasNext()) {
+            Enemy enemy = iteratorEnemy.next();
+            if (EntityGeneral.isColliding(enemy, player)) {
+                iteratorEnemy.remove();
+                player.setHealthPoints(player.getHealthPoints() - 10); //10 - damage
+                continue;
+            }
+
+            Iterator<Bullet> bulletIterator = player.getBullets().iterator();
+            while(bulletIterator.hasNext()){
+                Entity bullet = bulletIterator.next();
+                if(EntityGeneral.isColliding(bullet, enemy)){
+
+                    xpBar.draw(canvas, enemy.getXpOnKill());
+
+                    bulletIterator.remove();
+                    iteratorEnemy.remove();
+                    break;
+                }
+
+                if(EntityGeneral.getDistanceBetweenObjects(bullet, player) > (double) displayMetrics.widthPixels / 2 + 100){ //100 - offset, in case
+                    bulletIterator.remove();
+                }
+            }
+        }
+        gameCamera.update(player.getPositionX(), player.getPositionY());
+
+    }
+
+}
