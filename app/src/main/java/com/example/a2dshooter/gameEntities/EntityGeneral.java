@@ -1,7 +1,8 @@
 package com.example.a2dshooter.gameEntities;
 
-import androidx.annotation.NonNull;
+import android.graphics.Canvas;
 
+import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.utils.Util;
 
 public interface EntityGeneral {
@@ -21,7 +22,8 @@ public interface EntityGeneral {
         return distance <= distanceToCollision;
     }
 
-    @NonNull
-    @Override
-    String toString();
+    void draw(Canvas canvas, GameCamera gameCamera);
+
+    void move();
+
 }

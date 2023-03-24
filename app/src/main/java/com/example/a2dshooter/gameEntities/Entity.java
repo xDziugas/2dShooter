@@ -66,11 +66,11 @@ public abstract class Entity implements EntityPrimary {
 
     public double getPositionY() { return positionY; }
 
-    protected double getDirectionX() {
+    public double getDirectionX() {
         return directionX;
     }
 
-    protected double getDirectionY() {
+    public double getDirectionY() {
         return directionY;
     }
 
