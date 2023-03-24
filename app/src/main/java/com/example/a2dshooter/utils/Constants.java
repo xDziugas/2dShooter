@@ -1,5 +1,6 @@
-package com.example.a2dshooter;
+package com.example.a2dshooter.utils;
 
+import com.example.a2dshooter.GameLoop;
 import com.example.a2dshooter.gameEntities.Entity;
 import com.example.a2dshooter.utils.Util;
 

@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.a2dshooter.Constants;
+import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 

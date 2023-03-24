@@ -7,12 +7,11 @@ import android.util.DisplayMetrics;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.a2dshooter.Constants;
+import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
 import com.example.a2dshooter.gamePanels.Joystick;
-import com.example.a2dshooter.gamePanels.XpBar;
 import com.example.a2dshooter.utils.Util;
 
 import java.util.ArrayList;

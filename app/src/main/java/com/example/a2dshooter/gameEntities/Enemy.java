@@ -2,13 +2,11 @@ package com.example.a2dshooter.gameEntities;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.DisplayMetrics;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.a2dshooter.Constants;
-import com.example.a2dshooter.Game;
+import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
