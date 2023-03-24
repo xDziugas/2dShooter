@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.a2dshooter.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 
@@ -18,13 +19,13 @@ public class Bullet extends Entity{
                 ContextCompat.getColor(context, R.color.bullet),
                 entity.getPositionX(),
                 entity.getPositionY(),
-                BULLET_RADIUS
+                Constants.BULLET_RADIUS
         );
 
         this.damage = damage;
 
-        velocityX = entity.getDirectionX() * MAX_SPEED_BULLET * multiplier;
-        velocityY = entity.getDirectionY() * MAX_SPEED_BULLET * multiplier;
+        velocityX = entity.getDirectionX() * Constants.MAX_SPEED_BULLET * multiplier;
+        velocityY = entity.getDirectionY() * Constants.MAX_SPEED_BULLET * multiplier;
     }
 
     public void draw(Canvas canvas, GameCamera gameCamera){

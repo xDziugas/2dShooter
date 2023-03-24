@@ -7,31 +7,33 @@ import android.util.DisplayMetrics;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.a2dshooter.Constants;
 import com.example.a2dshooter.Game;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
+import com.example.a2dshooter.utils.Util;
 
 import java.util.ArrayList;
 
 public class Enemy extends Entity {
 
-    private static final double framesUntilSpawnMax = 60 / (SPAWNS_PER_MINUTE / 60.0);
+    private static final double framesUntilSpawnMax = 60 / (Constants.SPAWNS_PER_MINUTE / 60.0);
     private static double framesUntilSpawn = framesUntilSpawnMax;
     private final GameCamera gameCamera;
-    private int healthPoints = MAX_HEALTH_POINTS_ENEMY;
+    private int healthPoints = Constants.MAX_HEALTH_POINTS_ENEMY;
     private final HealthBar healthbar;
     private final Player player;
     private Boolean isAlive = true;
     private final ArrayList<Bullet> listOfMines = new ArrayList<>();
     private final DisplayMetrics displayMetrics;
-    private final int xpOnKill = XP_ON_KILL_ENEMY;
+    private final int xpOnKill = Constants.XP_ON_KILL_ENEMY;
 
     public Enemy(Context context, Player player, DisplayMetrics displayMetrics, GameCamera gameCamera){
         super(
                 context,
                 ContextCompat.getColor(context, R.color.enemy),
-                ENEMY_RADIUS
+                Constants.ENEMY_RADIUS
         );
 
         this.player = player;
@@ -44,8 +46,8 @@ public class Enemy extends Entity {
         positionX += player.getPositionX();
         positionY += player.getPositionY();
 
-        setHealthPoints(MAX_HEALTH_POINTS_ENEMY);
-        this.healthbar = new HealthBar(context, this, MAX_HEALTH_POINTS_ENEMY, gameCamera);
+        setHealthPoints(Constants.MAX_HEALTH_POINTS_ENEMY);
+        this.healthbar = new HealthBar(context, this, Constants.MAX_HEALTH_POINTS_ENEMY, gameCamera);
     }
 
     public void draw(Canvas canvas, GameCamera gameCamera){
@@ -60,7 +62,7 @@ public class Enemy extends Entity {
         double distanceToPlayerY = player.getPositionY() - positionY;
 
         //calc distance
-        double distanceToPlayer = EntityGeneral.getDistanceBetweenObjects(this, player);
+        double distanceToPlayer = Util.getDistanceBetweenObjects(this, player);
 
         //calc direction
         double directionX = distanceToPlayerX / distanceToPlayer;
@@ -68,8 +70,8 @@ public class Enemy extends Entity {
 
         //set velocity
         if(distanceToPlayer > 0){
-            velocityX = directionX * MAX_SPEED_PER_FRAME_ENEMY;
-            velocityY = directionY * MAX_SPEED_PER_FRAME_ENEMY;
+            velocityX = directionX * Constants.MAX_SPEED_PER_FRAME_ENEMY;
+            velocityY = directionY * Constants.MAX_SPEED_PER_FRAME_ENEMY;
         }else{
             velocityX = 0;
             velocityY = 0;
@@ -78,7 +80,7 @@ public class Enemy extends Entity {
         //update the position of the enemy
         super.move();
 
-        if(EntityGeneral.isColliding(this, player)){
+        if(Util.isColliding(this, player)){
             setAlive(false);
         }
     }
@@ -102,7 +104,7 @@ public class Enemy extends Entity {
     }
 
     public void placeMine(){
-        listOfMines.add(new Bullet(context, this, 0, MAX_MINE_DAMAGE));
+        listOfMines.add(new Bullet(context, this, 0, Constants.MAX_MINE_DAMAGE));
     }
 
     public void drawMines(Canvas canvas, GameCamera gameCamera){
@@ -116,11 +118,14 @@ public class Enemy extends Entity {
     }
 
     public double getSpawnPositionX(){
-        return (Math.random() * 2 - 1) * ((double) (displayMetrics.widthPixels / 2) + ENEMY_SPAWN_POSITION_OFFSET);
+        return (Math.random() * 2 - 1) * ((double) (displayMetrics.widthPixels / 2) + Constants.ENEMY_SPAWN_POSITION_OFFSET);
     }
 
     public double getSpawnPositionY(double positionX){
-        double radiusSquared = ((double) displayMetrics.widthPixels + ENEMY_SPAWN_POSITION_OFFSET) * ((double) displayMetrics.widthPixels + ENEMY_SPAWN_POSITION_OFFSET) / 4;
+        double radiusSquared = ((double) displayMetrics.widthPixels +
+                Constants.ENEMY_SPAWN_POSITION_OFFSET) * ((double) displayMetrics.widthPixels +
+                Constants.ENEMY_SPAWN_POSITION_OFFSET) / 4;
+
         double xSquared = positionX * positionX;
 
         double plusMinusOne = (Math.round(Math.random()) * 2 - 1);

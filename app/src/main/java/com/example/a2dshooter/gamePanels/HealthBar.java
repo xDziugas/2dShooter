@@ -52,10 +52,10 @@ public class HealthBar {
         borderTop = borderBottom - height;
 
         canvas.drawRect(
-                (float) gameCamera.gameToDisplayCoordinatesX(borderLeft),
-                (float) gameCamera.gameToDisplayCoordinatesY(borderTop),
-                (float) gameCamera.gameToDisplayCoordinatesX(borderRight),
-                (float) gameCamera.gameToDisplayCoordinatesY(borderBottom),
+                (float) gameCamera.gameNewX(borderLeft),
+                (float) gameCamera.gameNewY(borderTop),
+                (float) gameCamera.gameNewX(borderRight),
+                (float) gameCamera.gameNewY(borderBottom),
                 borderPaint
         );
 
@@ -69,10 +69,10 @@ public class HealthBar {
         healthTop = healthBottom - healthHeight;
 
         canvas.drawRect(
-                (float) gameCamera.gameToDisplayCoordinatesX(healthLeft),
-                (float) gameCamera.gameToDisplayCoordinatesY(healthTop),
-                (float) gameCamera.gameToDisplayCoordinatesX(healthRight),
-                (float) gameCamera.gameToDisplayCoordinatesY(healthBottom),
+                (float) gameCamera.gameNewX(healthLeft),
+                (float) gameCamera.gameNewY(healthTop),
+                (float) gameCamera.gameNewX(healthRight),
+                (float) gameCamera.gameNewY(healthBottom),
                 healthPaint
         );
 

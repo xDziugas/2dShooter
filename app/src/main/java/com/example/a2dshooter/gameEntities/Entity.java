@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.a2dshooter.GameCamera;
 
-public abstract class Entity implements EntityPrimary {
+public abstract class Entity {
 
     public double positionX;
     public double positionY;
@@ -40,8 +40,8 @@ public abstract class Entity implements EntityPrimary {
 
     public void draw(Canvas canvas, GameCamera gameCamera){
         canvas.drawCircle(
-                (float) gameCamera.gameToDisplayCoordinatesX(positionX),
-                (float) gameCamera.gameToDisplayCoordinatesY(positionY),
+                (float) gameCamera.gameNewX(positionX),
+                (float) gameCamera.gameNewY(positionY),
                 (float) radius,
                 paint
         );

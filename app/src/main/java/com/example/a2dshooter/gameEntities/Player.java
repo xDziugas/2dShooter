@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.a2dshooter.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
@@ -34,11 +35,11 @@ public class Player extends Entity{
                 ContextCompat.getColor(context, R.color.player),
                 displayMetrics.widthPixels / 2.0,
                 displayMetrics.heightPixels / 2.0,
-                PLAYER_RADIUS
+                Constants.PLAYER_RADIUS
         );
 
-        this.healthbar = new HealthBar(context, this, MAX_HEALTH_POINTS_PLAYER, gameCamera);
-        setHealthPoints(MAX_HEALTH_POINTS_PLAYER);
+        this.healthbar = new HealthBar(context, this, Constants.MAX_HEALTH_POINTS_PLAYER, gameCamera);
+        setHealthPoints(Constants.MAX_HEALTH_POINTS_PLAYER);
 
         Paint paint = new Paint();
         paint.setColor(color);
@@ -53,7 +54,7 @@ public class Player extends Entity{
     }
 
     public void shoot(){
-        listOfBullets.add(new Bullet(context, this, 1, MAX_BULLET_DAMAGE));
+        listOfBullets.add(new Bullet(context, this, 1, Constants.MAX_BULLET_DAMAGE));
     }
 
     public void moveBullets(){
@@ -74,11 +75,11 @@ public class Player extends Entity{
 
     @Override
     public void move(){
-        velocityX = joystickMovement.getActuatorX() * MAX_SPEED_PER_FRAME_PLAYER;
-        velocityY = joystickMovement.getActuatorY() * MAX_SPEED_PER_FRAME_PLAYER;
+        velocityX = joystickMovement.getActuatorX() * Constants.MAX_SPEED_PER_FRAME_PLAYER;
+        velocityY = joystickMovement.getActuatorY() * Constants.MAX_SPEED_PER_FRAME_PLAYER;
 
-        double facingX = joystickShoot.getActuatorX() * MAX_SPEED_PER_FRAME_PLAYER;
-        double facingY = joystickShoot.getActuatorY() * MAX_SPEED_PER_FRAME_PLAYER;
+        double facingX = joystickShoot.getActuatorX() * Constants.MAX_SPEED_PER_FRAME_PLAYER;
+        double facingY = joystickShoot.getActuatorY() * Constants.MAX_SPEED_PER_FRAME_PLAYER;
 
         //update position
         super.move();

@@ -16,11 +16,11 @@ import androidx.core.content.ContextCompat;
 import com.example.a2dshooter.gameEntities.Bullet;
 import com.example.a2dshooter.gameEntities.Enemy;
 import com.example.a2dshooter.gameEntities.Entity;
-import com.example.a2dshooter.gameEntities.EntityGeneral;
 import com.example.a2dshooter.gameEntities.Player;
 import com.example.a2dshooter.gamePanels.Joystick;
 import com.example.a2dshooter.gamePanels.RefreshRates;
 import com.example.a2dshooter.gamePanels.XpBar;
+import com.example.a2dshooter.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -228,7 +228,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         Iterator<Enemy> iteratorEnemy = listOfEnemies.iterator();
         while(iteratorEnemy.hasNext()) {
             Enemy enemy = iteratorEnemy.next();
-            if (EntityGeneral.isColliding(enemy, player)) {
+            if (Util.isColliding(enemy, player)) {
                 iteratorEnemy.remove();
                 player.setHealthPoints(player.getHealthPoints() - 10); //10 - damage
                 continue;
@@ -237,7 +237,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             Iterator<Bullet> bulletIterator = player.getBullets().iterator();
             while(bulletIterator.hasNext()){
                 Entity bullet = bulletIterator.next();
-                if(EntityGeneral.isColliding(bullet, enemy)){
+                if(Util.isColliding(bullet, enemy)){
 
                     xpBar.setCurrentXp(xpBar.getCurrentXp() + enemy.getXpOnKill());
 
@@ -246,7 +246,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     break;
                 }
 
-                if(EntityGeneral.getDistanceBetweenObjects(bullet, player) > (double) displayMetrics.widthPixels / 2 + 100){ //100 - offset, in case
+                if(Util.getDistanceBetweenObjects(bullet, player) > (double) displayMetrics.widthPixels / 2 + 100){ //100 - offset, in case
                     bulletIterator.remove();
                 }
             }
@@ -254,7 +254,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             bulletIterator = enemy.getMines().iterator();
             while(bulletIterator.hasNext()){
                 Bullet bullet = bulletIterator.next();
-                if(EntityGeneral.isColliding(bullet, player)){
+                if(Util.isColliding(bullet, player)){
 
                     bulletIterator.remove();
                     player.setHealthPoints(player.getHealthPoints() - bullet.getDamage());

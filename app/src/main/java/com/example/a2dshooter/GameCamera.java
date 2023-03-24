@@ -2,15 +2,13 @@ package com.example.a2dshooter;
 
 import android.graphics.Rect;
 
-import com.example.a2dshooter.gameEntities.Entity;
-
 public class GameCamera {
 
     public final Rect DISPLAY_RECT;
     private final int widthPixels;
     private final int heightPixels;
-    private double gameToDisplayCoordinatesOffsetX;
-    private double gameToDisplayCoordinatesOffsetY;
+    private double offsetX;
+    private double offsetY;
     private final double displayCenterX;
     private final double displayCenterY;
     private double gameCenterX;
@@ -30,17 +28,17 @@ public class GameCamera {
         gameCenterY = centerY;
 
         //player distance to center
-        gameToDisplayCoordinatesOffsetX = displayCenterX - gameCenterX;
-        gameToDisplayCoordinatesOffsetY = displayCenterY - gameCenterY;
+        offsetX = displayCenterX - gameCenterX;
+        offsetY = displayCenterY - gameCenterY;
     }
 
-    public double gameToDisplayCoordinatesX(double x) {
+    public double gameNewX(double x) {
         //place object on relatively the same place on the screen, x + player distance moved
-        return x + gameToDisplayCoordinatesOffsetX;
+        return x + offsetX;
     }
 
-    public double gameToDisplayCoordinatesY(double y) {
-        return y + gameToDisplayCoordinatesOffsetY;
+    public double gameNewY(double y) {
+        return y + offsetY;
     }
 
     public Rect getGameRect() {
