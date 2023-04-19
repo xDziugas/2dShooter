@@ -17,6 +17,7 @@ public abstract class Entity {
     public double directionX = 1;
     public double directionY = 0;
     public double radius;
+    public double slownessEffect = 1;
     public Paint paint;
     public Context context;
 
@@ -57,7 +58,7 @@ public abstract class Entity {
     }
 
 
-    public void move(){
+    public void move() {
         positionX += velocityX;
         positionY += velocityY;
     }

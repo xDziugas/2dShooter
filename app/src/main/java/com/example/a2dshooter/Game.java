@@ -35,14 +35,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     DisplayMetrics displayMetrics = new DisplayMetrics();
     private final Joystick joystickMovement;
     private final Joystick joystickShoot;
-    private GameCamera gameCamera;
-    private XpBar xpBar;
+    private final GameCamera gameCamera;
+    private final XpBar xpBar;
 
-    private final double GAME_SPEED_MULTIPLIER = 2.1;
+    private final double GAME_SPEED_MULTIPLIER = 1.1;
     private final int framesToWaitMax = (int) (MAX_FRAME_RATE / GAME_SPEED_MULTIPLIER);
 
     private int framesToWaitPlayer = framesToWaitMax;
-    private int framesToWaitEnemy = framesToWaitMax -20;
+    private int framesToWaitEnemy = framesToWaitMax - 10;
 
     public Game(Context context){
         super(context);
@@ -93,8 +93,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //todo: kulkas pashalint jei uz ekrano, enemies spawnint uz ekrano
-
 
         //handle touch event actions
         switch (event.getActionMasked()){
@@ -171,7 +169,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //draw game objects
         player.draw(canvas, gameCamera);
 
-
         for(Enemy enemy : listOfEnemies){
             enemy.draw(canvas, gameCamera);
             enemy.drawMines(canvas, gameCamera);
@@ -183,11 +180,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         refreshRates.draw(canvas);
         joystickMovement.draw(canvas);
         joystickShoot.draw(canvas);
-        xpBar.draw(canvas);
 
+        xpBar.draw(canvas);
     }
 
-    public void update(){
+    public void update() {
         if(player.getHealthPoints() <= 0){
             return;
         }
@@ -195,6 +192,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //update game panels
         joystickShoot.update();
         joystickMovement.update();
+
         player.move();
 
         if(framesToWaitPlayer <= 0){ //player fire rate (optimize)

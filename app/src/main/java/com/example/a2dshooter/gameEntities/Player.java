@@ -1,9 +1,12 @@
 package com.example.a2dshooter.gameEntities;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -73,7 +76,7 @@ public class Player extends Entity{
     }
 
     @Override
-    public void move(){
+    public void move() {
         velocityX = joystickMovement.getActuatorX() * Constants.MAX_SPEED_PER_FRAME_PLAYER;
         velocityY = joystickMovement.getActuatorY() * Constants.MAX_SPEED_PER_FRAME_PLAYER;
 
@@ -85,11 +88,15 @@ public class Player extends Entity{
 
         //update direction
         if(facingX != 0 || facingY != 0){
-            //unit vector
             double distance = Util.getDistanceBetweenPoints(0, 0, facingX, facingY);
             directionX = facingX / distance;
             directionY = facingY / distance;
         }
+    }
+
+    public void incLevel() {
+        this.level++;
+        fireRate *= 0.8;
     }
 
     public int getHealthPoints(){
@@ -110,11 +117,6 @@ public class Player extends Entity{
 
     public int getLevel() {
         return level;
-    }
-
-    public void incLevel() {
-        this.level++;
-        fireRate *= 0.8;
     }
 
     public int getFireRate(){

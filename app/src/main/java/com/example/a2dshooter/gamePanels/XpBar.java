@@ -38,7 +38,7 @@ public class XpBar {
         this.player = player;
     }
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
 
         //draw border
         float borderLeft, borderTop, borderRight, borderBottom;
@@ -91,6 +91,10 @@ public class XpBar {
 
     public void setCurrentXp(float currentXp) {
         this.currentXp = currentXp;
+    }
+
+    public float[] getXpRequirements(){
+        return this.maxXp;
     }
 
 }
