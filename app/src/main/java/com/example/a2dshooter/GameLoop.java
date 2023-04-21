@@ -2,10 +2,7 @@ package com.example.a2dshooter;
 
 import android.graphics.Canvas;
 import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
-
-import java.util.Observer;
 
 public class GameLoop extends Thread{
 

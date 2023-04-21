@@ -8,10 +8,10 @@ import com.example.a2dshooter.utils.Util;
 
 public class Joystick {
 
-    private int innerCircleRadius;
-    private int outerCircleRadius;
-    private int outerCircleCenterPositionX;
-    private int outerCircleCenterPositionY;
+    private final int innerCircleRadius;
+    private final int outerCircleRadius;
+    private final int outerCircleCenterPositionX;
+    private final int outerCircleCenterPositionY;
     private int innerCircleCenterPositionX;
     private int innerCircleCenterPositionY;
     private final Paint outerCirclePaint;

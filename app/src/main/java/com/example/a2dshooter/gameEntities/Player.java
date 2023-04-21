@@ -1,20 +1,18 @@
 package com.example.a2dshooter.gameEntities;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
 import com.example.a2dshooter.gamePanels.Joystick;
+import com.example.a2dshooter.graphics.Animate;
+import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.utils.Util;
 
 import java.util.ArrayList;
@@ -30,8 +28,10 @@ public class Player extends Entity{
     private int level = 0;
 
     public final ArrayList<Bullet> listOfBullets = new ArrayList<>();
+    private final PlayerState playerState;
+    private final Animate animator;
 
-    public Player(Context context, Joystick joystickMovement, Joystick joystickShoot, DisplayMetrics displayMetrics, int color, GameCamera gameCamera){
+    public Player(Context context, Joystick joystickMovement, Joystick joystickShoot, DisplayMetrics displayMetrics, int color, GameCamera gameCamera, Animate animator){
         super(
                 context,
                 ContextCompat.getColor(context, R.color.player),
@@ -48,11 +48,15 @@ public class Player extends Entity{
 
         this.joystickMovement = joystickMovement;
         this.joystickShoot = joystickShoot;
+
+        this.playerState = new PlayerState(this);
+        this.animator = animator;
     }
 
     public void draw(Canvas canvas, GameCamera gameCamera){
-        super.draw(canvas, gameCamera);
+        //super.draw(canvas, gameCamera);
         healthbar.draw(canvas, this.getHealthPoints());
+        animator.draw(canvas, gameCamera, this);
     }
 
     public void shoot(){
@@ -92,6 +96,8 @@ public class Player extends Entity{
             directionX = facingX / distance;
             directionY = facingY / distance;
         }
+
+        playerState.update();
     }
 
     public void incLevel() {
@@ -123,5 +129,7 @@ public class Player extends Entity{
         return fireRate;
     }
 
-
+    public PlayerState getPlayerState(){
+        return playerState;
+    }
 }

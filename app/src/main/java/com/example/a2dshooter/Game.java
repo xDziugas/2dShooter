@@ -17,9 +17,13 @@ import com.example.a2dshooter.gameEntities.Bullet;
 import com.example.a2dshooter.gameEntities.Enemy;
 import com.example.a2dshooter.gameEntities.Entity;
 import com.example.a2dshooter.gameEntities.Player;
+import com.example.a2dshooter.gamePanels.GameOver;
 import com.example.a2dshooter.gamePanels.Joystick;
 import com.example.a2dshooter.gamePanels.RefreshRates;
 import com.example.a2dshooter.gamePanels.XpBar;
+import com.example.a2dshooter.graphics.Animate;
+import com.example.a2dshooter.graphics.SpriteSheet;
+import com.example.a2dshooter.map.Tilemap;
 import com.example.a2dshooter.utils.Util;
 
 import java.util.ArrayList;
@@ -44,6 +48,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private int framesToWaitPlayer = framesToWaitMax;
     private int framesToWaitEnemy = framesToWaitMax - 10;
 
+    private final GameOver gameOver;
+    private final Tilemap tilemap;
+
     public Game(Context context){
         super(context);
 
@@ -55,6 +62,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameLoop = new GameLoop(this, surfaceHolder);
 
         //game panels
+        gameOver = new GameOver(context);
         refreshRates = new RefreshRates(context, gameLoop);
         joystickMovement = new Joystick(330, 700, 120, 60);
         joystickShoot = new Joystick(2000, 700, 120, 60);
@@ -63,9 +71,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameCamera = new GameCamera(displayMetrics.widthPixels, displayMetrics.heightPixels);
 
         //entities
-        player = new Player(context, joystickMovement, joystickShoot, displayMetrics, ContextCompat.getColor(context, R.color.player), gameCamera);
+        SpriteSheet spriteSheet = new SpriteSheet(context);
+        Animate animator = new Animate(spriteSheet.getPlayerSpriteArray());
+        player = new Player(context, joystickMovement, joystickShoot, displayMetrics, ContextCompat.getColor(context, R.color.player), gameCamera, animator);
         listOfEnemies.add(new Enemy(context, player, displayMetrics, gameCamera));
 
+        tilemap = new Tilemap(spriteSheet);
         xpBar = new XpBar(displayMetrics, player);
 
         setFocusable(true);
@@ -166,6 +177,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
 
+        //draw tilemap
+        tilemap.draw(canvas, gameCamera);
+
         //draw game objects
         player.draw(canvas, gameCamera);
 
@@ -182,9 +196,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         joystickShoot.draw(canvas);
 
         xpBar.draw(canvas);
+
+        if(player.getHealthPoints() <= 0){
+            gameOver.draw(canvas);
+        }
     }
 
     public void update() {
+
+        //stop updating if the player is dead
         if(player.getHealthPoints() <= 0){
             return;
         }

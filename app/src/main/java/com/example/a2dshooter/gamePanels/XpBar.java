@@ -13,12 +13,12 @@ public class XpBar {
     private final Paint xpPaint;
     private final Paint borderPaint;
     private final Paint lvlPaint;
-    private float margin = 2;
-    private float barLength = 900;
-    private float barWidth = 25;
-    private float[] maxXp = {200, 300, 400, 500, 600, 700, 2000, 3000, 5000, 10000, 15000, 20000};
+    private final float margin = 2;
+    private final float barLength = 900;
+    private final float barWidth = 25;
+    private final float[] maxXp = {200, 300, 400, 500, 600, 700, 2000, 3000, 5000, 10000, 15000, 20000};
     private float currentXp = 0;
-    private Player player;
+    private final Player player;
 
     public XpBar(DisplayMetrics displayMetrics, Player player){
         this.displayMetrics = displayMetrics;
