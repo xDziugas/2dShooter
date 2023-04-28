@@ -93,12 +93,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
+        if(gameLoop.getState().equals(Thread.State.TERMINATED)){
+            gameLoop.stopLoop();
+        }
     }
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
-
+        gameLoop.stopLoop();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -175,6 +177,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas){
+        //if super.isactivated
         super.draw(canvas);
 
         //draw tilemap
