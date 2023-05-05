@@ -21,7 +21,7 @@ public class Enemy extends Entity implements Serializable{
     private static double framesUntilSpawn = framesUntilSpawnMax;
     public transient GameCamera gameCamera;
     private int healthPoints = Constants.MAX_HEALTH_POINTS_ENEMY;
-    public transient HealthBar healthbar;
+    public HealthBar healthbar;
     public Player player;
     private Boolean isAlive = true;
     public transient ArrayList<Bullet> listOfMines = new ArrayList<>();

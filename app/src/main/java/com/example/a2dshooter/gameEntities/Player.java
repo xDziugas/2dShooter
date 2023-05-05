@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Player extends Entity implements Serializable{
 
     private int healthPoints;
-    public transient HealthBar healthbar;
+    public HealthBar healthbar;
     private boolean ableToShoot = false;
     public transient Joystick joystickMovement;
     public transient Joystick joystickShoot;

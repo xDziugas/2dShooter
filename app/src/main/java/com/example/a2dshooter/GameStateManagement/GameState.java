@@ -1,5 +1,9 @@
 package com.example.a2dshooter.GameStateManagement;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
 import com.example.a2dshooter.gameEntities.Bullet;
 import com.example.a2dshooter.gameEntities.Enemy;
 import com.example.a2dshooter.gameEntities.Player;
@@ -40,8 +44,12 @@ public class GameState implements Serializable {
         this.enemies = newGameState.enemies;
         this.player.paint = defaultValues.playerPaint;
         this.player.context = defaultValues.playerContext;
-        this.player.healthbar = defaultValues.playerHealthBar;
+
         this.player.healthbar.entity = this.player;
+        this.player.healthbar.healthPaint = defaultValues.healthPaint;
+        this.player.healthbar.borderPaint = defaultValues.borderPaint;
+        this.player.healthbar.gameCamera = defaultValues.healthCamera;
+
         this.player.joystickMovement = defaultValues.joystickMove;
         this.player.joystickShoot = defaultValues.joystickShoot;
         this.player.animator = defaultValues.playerAnimator;
@@ -52,15 +60,19 @@ public class GameState implements Serializable {
             bullet.paint = defaultValues.bulletPaint;
         }
 
+        Log.d(TAG, "update: enemies.size/healthbar.size: " + enemies.size() + ", " + defaultValues.enemyHealthBar.size());
+
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
 
-            if(i <= defaultValues.enemyCamera.size() - 1){ //?
-                enemy.gameCamera = defaultValues.enemyCamera.get(i);
-                enemy.healthbar = defaultValues.enemyHealthBar.get(i);
-            }
 
+            enemy.gameCamera = defaultValues.enemyCamera;
+
+            enemy.healthbar.borderPaint = defaultValues.borderPaint;
+            enemy.healthbar.healthPaint = defaultValues.healthPaint;
             enemy.healthbar.entity = enemy;
+            enemy.healthbar.gameCamera = enemy.gameCamera;
+
             enemy.displayMetrics = defaultValues.enemyDisplayMetrics;
             enemy.player = player;
             enemy.listOfMines = new ArrayList<>();

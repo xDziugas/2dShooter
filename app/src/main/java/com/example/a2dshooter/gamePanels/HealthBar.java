@@ -10,14 +10,16 @@ import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gameEntities.Entity;
 
-public class HealthBar {
+import java.io.Serializable;
 
-    private final Paint borderPaint;
-    private final Paint healthPaint;
-    public Entity entity;
+public class HealthBar implements Serializable {
+
+    public transient Paint borderPaint;
+    public transient Paint healthPaint;
+    public transient Entity entity;
     private final int width, height, margin;
     private final int max_health;
-    private final GameCamera gameCamera;
+    public transient GameCamera gameCamera;
 
 
     public HealthBar(Context context, Entity entity, int max_health, GameCamera gameCamera){

@@ -333,7 +333,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        gameState.update(player, listOfEnemies);
+        //gameState.update(player, listOfEnemies);
 
         gameCamera.update(player.getPositionX(), player.getPositionY());
     }
