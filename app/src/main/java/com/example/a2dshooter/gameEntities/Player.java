@@ -15,21 +15,22 @@ import com.example.a2dshooter.graphics.Animate;
 import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.utils.Util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player extends Entity{
+public class Player extends Entity implements Serializable{
 
     private int healthPoints;
-    private final HealthBar healthbar;
+    public transient HealthBar healthbar;
     private boolean ableToShoot = false;
-    private final Joystick joystickMovement;
-    private final Joystick joystickShoot;
+    public transient Joystick joystickMovement;
+    public transient Joystick joystickShoot;
     private int fireRate = 60; //bullet every X frames
     private int level = 0;
 
-    public final ArrayList<Bullet> listOfBullets = new ArrayList<>();
-    private final PlayerState playerState;
-    private final Animate animator;
+    public ArrayList<Bullet> listOfBullets = new ArrayList<>();
+    public transient PlayerState playerState;
+    public transient Animate animator;
 
     public Player(Context context, Joystick joystickMovement, Joystick joystickShoot, DisplayMetrics displayMetrics, int color, GameCamera gameCamera, Animate animator){
         super(
@@ -131,5 +132,9 @@ public class Player extends Entity{
 
     public PlayerState getPlayerState(){
         return playerState;
+    }
+
+    public HealthBar getHealthbar() {
+        return healthbar;
     }
 }

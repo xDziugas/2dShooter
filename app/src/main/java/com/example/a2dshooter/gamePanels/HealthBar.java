@@ -12,8 +12,9 @@ import com.example.a2dshooter.gameEntities.Entity;
 
 public class HealthBar {
 
-    private final Paint borderPaint, healthPaint;
-    private final Entity entity;
+    private final Paint borderPaint;
+    private final Paint healthPaint;
+    public Entity entity;
     private final int width, height, margin;
     private final int max_health;
     private final GameCamera gameCamera;
@@ -29,6 +30,7 @@ public class HealthBar {
 
         this.borderPaint = new Paint();
         this.healthPaint = new Paint();
+
         this.gameCamera = gameCamera;
 
         int borderColor = ContextCompat.getColor(context, R.color.healthBarBorder);
@@ -58,6 +60,7 @@ public class HealthBar {
                 (float) gameCamera.gameNewY(borderBottom),
                 borderPaint
         );
+
 
         //draw health
         float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;

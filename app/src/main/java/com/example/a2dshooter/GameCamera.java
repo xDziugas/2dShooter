@@ -2,9 +2,11 @@ package com.example.a2dshooter;
 
 import android.graphics.Rect;
 
+import java.io.Serializable;
+
 public class GameCamera {
 
-    public final Rect DISPLAY_RECT;
+    private final transient Rect DISPLAY_RECT;
     private final int widthPixels;
     private final int heightPixels;
     private double offsetX;
@@ -50,4 +52,7 @@ public class GameCamera {
         );
     }
 
+    public Rect getDISPLAY_RECT() {
+        return DISPLAY_RECT;
+    }
 }

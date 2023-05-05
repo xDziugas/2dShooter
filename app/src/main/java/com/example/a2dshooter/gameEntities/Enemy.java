@@ -12,19 +12,20 @@ import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
 import com.example.a2dshooter.utils.Util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Enemy extends Entity {
+public class Enemy extends Entity implements Serializable{
 
     private static final double framesUntilSpawnMax = 60 / (Constants.SPAWNS_PER_MINUTE / 60.0);
     private static double framesUntilSpawn = framesUntilSpawnMax;
-    private final GameCamera gameCamera;
+    public transient GameCamera gameCamera;
     private int healthPoints = Constants.MAX_HEALTH_POINTS_ENEMY;
-    private final HealthBar healthbar;
-    private final Player player;
+    public transient HealthBar healthbar;
+    public Player player;
     private Boolean isAlive = true;
-    private final ArrayList<Bullet> listOfMines = new ArrayList<>();
-    private final DisplayMetrics displayMetrics;
+    public transient ArrayList<Bullet> listOfMines = new ArrayList<>();
+    public transient DisplayMetrics displayMetrics;
     private final int xpOnKill = Constants.XP_ON_KILL_ENEMY;
 
     public Enemy(Context context, Player player, DisplayMetrics displayMetrics, GameCamera gameCamera){

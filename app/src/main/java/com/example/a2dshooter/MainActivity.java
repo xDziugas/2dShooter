@@ -3,10 +3,13 @@ package com.example.a2dshooter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.Serializable;
+
+public class MainActivity extends AppCompatActivity implements Serializable {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

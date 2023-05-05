@@ -6,7 +6,9 @@ import android.graphics.Paint;
 
 import com.example.a2dshooter.utils.Util;
 
-public class Joystick {
+import java.io.Serializable;
+
+public class Joystick implements Serializable {
 
     private final int innerCircleRadius;
     private final int outerCircleRadius;
@@ -14,8 +16,8 @@ public class Joystick {
     private final int outerCircleCenterPositionY;
     private int innerCircleCenterPositionX;
     private int innerCircleCenterPositionY;
-    private final Paint outerCirclePaint;
-    private final Paint innerCirclePaint;
+    private final transient Paint outerCirclePaint;
+    private final transient Paint innerCirclePaint;
     private double joystickCenterToTouchDistance;
     private boolean isPressed;
     private double actuatorX;

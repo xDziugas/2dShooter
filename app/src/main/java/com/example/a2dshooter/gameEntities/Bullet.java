@@ -9,7 +9,9 @@ import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 
-public class Bullet extends Entity{
+import java.io.Serializable;
+
+public class Bullet extends Entity implements Serializable {
 
     private int damage;
 
@@ -32,7 +34,7 @@ public class Bullet extends Entity{
         super.draw(canvas, gameCamera);
     }
 
-    public void move() { //not needed probably
+    public void move() {
         positionX += velocityX;
         positionY += velocityY;
     }

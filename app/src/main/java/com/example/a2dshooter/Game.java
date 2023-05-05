@@ -1,9 +1,13 @@
 package com.example.a2dshooter;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,6 +17,9 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.example.a2dshooter.GameStateManagement.GameState;
+import com.example.a2dshooter.GameStateManagement.LoadButton;
+import com.example.a2dshooter.GameStateManagement.SaveButton;
 import com.example.a2dshooter.gameEntities.Bullet;
 import com.example.a2dshooter.gameEntities.Enemy;
 import com.example.a2dshooter.gameEntities.Entity;
@@ -26,6 +33,12 @@ import com.example.a2dshooter.graphics.SpriteSheet;
 import com.example.a2dshooter.map.Tilemap;
 import com.example.a2dshooter.utils.Util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -34,8 +47,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private static final int MAX_FRAME_RATE = 60;
     private final RefreshRates refreshRates;
     private GameLoop gameLoop;
-    private final Player player;
-    private final ArrayList<Enemy> listOfEnemies = new ArrayList<>();
+    private Player player;
+    private ArrayList<Enemy> listOfEnemies = new ArrayList<>();
     DisplayMetrics displayMetrics = new DisplayMetrics();
     private final Joystick joystickMovement;
     private final Joystick joystickShoot;
@@ -51,6 +64,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final GameOver gameOver;
     private final Tilemap tilemap;
 
+    private final GameState gameState;
+    private final Context context;
+
+    private final SaveButton saveButton;
+    private final LoadButton loadButton;
+
+
+    @SuppressLint("ResourceType")
     public Game(Context context){
         super(context);
 
@@ -79,6 +100,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         tilemap = new Tilemap(spriteSheet);
         xpBar = new XpBar(displayMetrics, player);
 
+        gameState = new GameState(player, listOfEnemies);
+        this.context = context;
+
+        saveButton = new SaveButton(displayMetrics);
+        loadButton = new LoadButton(displayMetrics);
+
         setFocusable(true);
     }
 
@@ -99,7 +126,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+    public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) { //auto save???
         gameLoop.stopLoop();
     }
 
@@ -122,6 +149,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     joystickMovement.setIsPressed(true);
                 }
 
+                if(saveButton.isPressed(event.getX(), event.getY())){
+                    saveGame();
+                }
+
+                if(loadButton.isPressed(event.getX(), event.getY())){
+                    loadGame();
+                }
+
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -139,6 +174,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                         joystickShoot.setIsPressed(true);
                         player.setCanShoot(true);
                     }
+                }
+
+                if(saveButton.isPressed(event.getX(), event.getY())){
+                    saveGame();
+                }
+
+                if(loadButton.isPressed(event.getX(), event.getY())){
+                    loadGame();
                 }
 
                 break;
@@ -177,7 +220,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas){
-        //if super.isactivated
+        if(gameLoop.getState().equals(Thread.State.TERMINATED)){
+            gameLoop.stopLoop();
+        }
+
         super.draw(canvas);
 
         //draw tilemap
@@ -200,14 +246,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         xpBar.draw(canvas);
 
+        saveButton.draw(canvas);
+
         if(player.getHealthPoints() <= 0){
             gameOver.draw(canvas);
         }
+
+        loadButton.draw(canvas);
     }
 
     public void update() {
 
-        //stop updating if the player is dead
         if(player.getHealthPoints() <= 0){
             return;
         }
@@ -218,7 +267,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player.move();
 
-        if(framesToWaitPlayer <= 0){ //player fire rate (optimize)
+        if(framesToWaitPlayer <= 0){
             if(player.canShoot()){
                 player.shoot();
             }
@@ -228,7 +277,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             framesToWaitPlayer--;
         }
 
-        if(framesToWaitEnemy <= 0){ //enemy fire rate / spawn rate (optimize)
+        if(framesToWaitEnemy <= 0){
             for(Enemy enemy : listOfEnemies){
                 enemy.placeMine();
             }
@@ -251,7 +300,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             Enemy enemy = iteratorEnemy.next();
             if (Util.isColliding(enemy, player)) {
                 iteratorEnemy.remove();
-                player.setHealthPoints(player.getHealthPoints() - 10); //10 - damage
+                player.setHealthPoints(player.getHealthPoints() - 10);
                 continue;
             }
 
@@ -267,7 +316,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     break;
                 }
 
-                if(Util.getDistanceBetweenObjects(bullet, player) > (double) displayMetrics.widthPixels / 2 + 100){ //100 - offset, in case
+                if(Util.getDistanceBetweenObjects(bullet, player) > (double) displayMetrics.widthPixels / 2 + 100){
                     bulletIterator.remove();
                 }
             }
@@ -281,12 +330,69 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     player.setHealthPoints(player.getHealthPoints() - bullet.getDamage());
                     break;
                 }
-
             }
-
         }
+
+        gameState.update(player, listOfEnemies);
+
         gameCamera.update(player.getPositionX(), player.getPositionY());
+    }
+
+    public void saveGame(){
+        gameState.update(player, listOfEnemies);
+        Log.d(TAG, "saveGame: works");
+
+        new Thread(() -> {
+            File file = new File(context.getFilesDir(), "gameState_data.bin");
+            try{
+                if(!file.exists()){
+                    file.createNewFile();
+                }
+
+                String filePath = file.getAbsolutePath();
+
+                Log.d(TAG, "file path: " + filePath);
+
+                FileOutputStream fileOut = new FileOutputStream(filePath);
+                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+                objectOut.writeObject(gameState);
+
+                Log.d(TAG, "run: gameState original: " + gameState.getPlayer().positionX);
+                objectOut.flush();
+                objectOut.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }).start();
 
     }
 
+    public void loadGame() {
+
+        Handler handler = new android.os.Handler(Looper.getMainLooper());
+
+        new Thread(() -> {
+            File file = new File(context.getFilesDir(), "gameState_data.bin");
+            String filePath = file.getAbsolutePath();
+            try {
+                FileInputStream fileIn = new FileInputStream(filePath);
+                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+                GameState newGameState = (GameState) objectIn.readObject();
+                objectIn.close();
+
+                handler.post(() -> {
+                    gameState.update(newGameState);
+                    updateGameState(gameState);
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void updateGameState(GameState gameState){
+        player = gameState.getPlayer();
+        listOfEnemies = gameState.getEnemies();
+    }
 }

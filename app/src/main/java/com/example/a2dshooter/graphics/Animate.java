@@ -5,7 +5,9 @@ import android.graphics.Canvas;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.gameEntities.Player;
 
-public class Animate {
+import java.io.Serializable;
+
+public class Animate implements Serializable {
 
     private final Sprite[] playerSpriteArray;
     private final int defaultFrame = 0;
@@ -16,10 +18,6 @@ public class Animate {
     public Animate(Sprite[] playerSpriteArray) {
         this.playerSpriteArray = playerSpriteArray;
     }
-
-    //todo: galima sukurt klase kuri shiftina framus pvz attact vidury begimo???
-    //todo: stop animating when game is over, or make dying animation
-    //todo: galima nutrest assetus vietoj piesimo
 
     public void draw(Canvas canvas, GameCamera gameCamera, Player player) {
         switch (player.getPlayerState().getState()){

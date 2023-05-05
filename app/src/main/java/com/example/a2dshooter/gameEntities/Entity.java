@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 
 import com.example.a2dshooter.GameCamera;
 
-public abstract class Entity {
+import java.io.Serializable;
+
+public abstract class Entity implements Serializable {
 
     public double positionX;
     public double positionY;
@@ -18,8 +20,8 @@ public abstract class Entity {
     public double directionY = 0;
     public double radius;
     public double slownessEffect = 1;
-    public Paint paint;
-    public Context context;
+    public transient Paint paint;
+    public transient Context context;
 
     public Entity(Context context, int color, double positionX, double positionY, double radius){
         this.positionX = positionX;

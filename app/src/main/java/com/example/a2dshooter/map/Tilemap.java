@@ -46,17 +46,15 @@ public class Tilemap {
                 config
         );
 
-        Canvas mapCanvas = new Canvas(mapBitmap); //ant naujo canvas mapas
+        Canvas mapCanvas = new Canvas(mapBitmap);
         for(int row = 0; row < MAP_ROWS; row++){
             for(int col = 0; col < MAP_COLUMNS; col++){
                 tilemap[row][col].draw(mapCanvas);
             }
         }
-
-        //System.out.println(); del debug galima pazet i mapa
     }
 
-    private Rect getRectByIndex(int indexRow, int indexCol){ //nebutina cj sitos funkcijos vps
+    private Rect getRectByIndex(int indexRow, int indexCol){
         return new Rect(
                 indexCol * TILE_WIDTH, //tile width = 64
                 indexRow * TILE_HEIGHT, //height 64
@@ -69,8 +67,8 @@ public class Tilemap {
         canvas.drawBitmap(
                 mapBitmap,
                 gameCamera.getGameRect(),
-                gameCamera.DISPLAY_RECT,
-                null //ant paint galima antialiazing ar pns,
+                gameCamera.getDISPLAY_RECT(),
+                null
         );
     }
 }
