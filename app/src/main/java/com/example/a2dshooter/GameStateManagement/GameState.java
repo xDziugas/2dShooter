@@ -1,9 +1,5 @@
 package com.example.a2dshooter.GameStateManagement;
 
-import static android.content.ContentValues.TAG;
-
-import android.util.Log;
-
 import com.example.a2dshooter.gameEntities.Bullet;
 import com.example.a2dshooter.gameEntities.Enemy;
 import com.example.a2dshooter.gameEntities.Player;
@@ -60,11 +56,8 @@ public class GameState implements Serializable {
             bullet.paint = defaultValues.bulletPaint;
         }
 
-        Log.d(TAG, "update: enemies.size/healthbar.size: " + enemies.size() + ", " + defaultValues.enemyHealthBar.size());
-
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
-
 
             enemy.gameCamera = defaultValues.enemyCamera;
 

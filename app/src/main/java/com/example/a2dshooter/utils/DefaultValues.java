@@ -69,16 +69,12 @@ public class DefaultValues {
             this.bulletPaint = player.listOfBullets.get(0).paint;
         }
 
-        //Log.d(TAG, "update: enemies.size: " + enemies.size());
-
         enemyHealthBar = new ArrayList<>();
 
         for(int i = 0; i < enemies.size(); i++){
             Enemy enemy = enemies.get(i);
             enemyHealthBar.add(enemy.healthbar);
         }
-
-        //Log.d(TAG, "update: healthbar.size: " + enemyHealthBar.size());
 
         if(!enemies.isEmpty()){
             this.enemyDisplayMetrics = enemies.get(0).displayMetrics;

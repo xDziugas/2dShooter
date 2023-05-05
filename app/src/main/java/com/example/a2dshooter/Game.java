@@ -333,16 +333,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        //gameState.update(player, listOfEnemies);
-
         gameCamera.update(player.getPositionX(), player.getPositionY());
     }
 
     public void saveGame(){
         gameState.update(player, listOfEnemies);
-        Log.d(TAG, "saveGame: works");
 
         new Thread(() -> {
+
             File file = new File(context.getFilesDir(), "gameState_data.bin");
             try{
                 if(!file.exists()){
@@ -351,20 +349,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
                 String filePath = file.getAbsolutePath();
 
-                Log.d(TAG, "file path: " + filePath);
-
                 FileOutputStream fileOut = new FileOutputStream(filePath);
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
                 objectOut.writeObject(gameState);
 
-                Log.d(TAG, "run: gameState original: " + gameState.getPlayer().positionX);
                 objectOut.flush();
                 objectOut.close();
             }catch (IOException e){
                 e.printStackTrace();
             }
         }).start();
-
     }
 
     public void loadGame() {
