@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.Looper;
@@ -74,6 +75,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @SuppressLint("ResourceType")
     public Game(Context context){
         super(context);
+
+        Intent intent = new Intent();
+        intent.getStringExtra("GAME_MODE");
+
+        //set const values (nebeconst??cj) su intent pagal tai ka pasirinko
+        //mb klase zinai? su default reiksmem ir td tsg setMode(easy) pvz
 
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 

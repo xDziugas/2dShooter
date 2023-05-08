@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">2dShooter</string>
+    <string name="start">Start</string>
+    <string name="game_test">Game Test</string>
+    <string name="hard">Hard</string>
+    <string name="medium">Medium</string>
+    <string name="easy">Easy</string>
 </resources>

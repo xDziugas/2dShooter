@@ -2,6 +2,7 @@ package com.example.a2dshooter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.Window;
@@ -21,7 +22,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
-        Game game = new Game(this);
-        setContentView(game);
+        Intent intent = new Intent(this, StartScreenActivity.class);
+        startActivity(intent);
+
     }
 }

@@ -36,7 +36,7 @@ public class SpriteSheet {
                 indexCol * 64, //sprite width = 64
                 indexRow * 64, //height 64
                 (indexCol + 1) * 64,
-                (indexRow + 1) * 64 //todo: max keista
+                (indexRow + 1) * 64
         ));
     }
 

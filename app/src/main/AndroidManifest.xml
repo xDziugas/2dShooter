@@ -14,10 +14,13 @@
         android:theme="@style/Theme.2dShooter"
         tools:targetApi="31">
         <activity
+            android:name=".StartScreenActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/NoActionBarTheme"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:theme="@style/NoActionBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
