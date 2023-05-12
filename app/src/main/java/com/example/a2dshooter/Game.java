@@ -32,6 +32,7 @@ import com.example.a2dshooter.gamePanels.XpBar;
 import com.example.a2dshooter.graphics.Animate;
 import com.example.a2dshooter.graphics.SpriteSheet;
 import com.example.a2dshooter.map.Tilemap;
+import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.utils.Util;
 
 import java.io.File;
@@ -71,15 +72,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final SaveButton saveButton;
     private final LoadButton loadButton;
 
-
     @SuppressLint("ResourceType")
     public Game(Context context){
         super(context);
 
-        Intent intent = new Intent();
-        intent.getStringExtra("GAME_MODE");
-
-        //set const values (nebeconst??cj) su intent pagal tai ka pasirinko
         //mb klase zinai? su default reiksmem ir td tsg setMode(easy) pvz
 
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -112,6 +108,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         saveButton = new SaveButton(displayMetrics);
         loadButton = new LoadButton(displayMetrics);
+
+        Constants.updateGameValues(Constants.gameMode);
+        player.updateFireRate(Constants.gameMode);
 
         setFocusable(true);
     }
@@ -313,13 +312,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
             Iterator<Bullet> bulletIterator = player.getBullets().iterator();
             while(bulletIterator.hasNext()){
-                Entity bullet = bulletIterator.next();
+                Bullet bullet = bulletIterator.next();
                 if(Util.isColliding(bullet, enemy)){
-
-                    xpBar.setCurrentXp(xpBar.getCurrentXp() + enemy.getXpOnKill());
-
+                    enemy.setHealthPoints(enemy.getHealthPoints() - bullet.getDamage());
+                    if(enemy.getHealthPoints() <= 0){
+                        xpBar.setCurrentXp(xpBar.getCurrentXp() + enemy.getXpOnKill());
+                        iteratorEnemy.remove();
+                    }
                     bulletIterator.remove();
-                    iteratorEnemy.remove();
                     break;
                 }
 

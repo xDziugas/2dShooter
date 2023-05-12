@@ -8,6 +8,8 @@ import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.a2dshooter.utils.Constants;
+
 import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         );
 
         Intent intent = new Intent(this, StartScreenActivity.class);
+
+
         startActivity(intent);
 
     }

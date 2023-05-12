@@ -106,6 +106,10 @@ public class Player extends Entity implements Serializable{
         fireRate *= 0.8;
     }
 
+    public void updateFireRate(double multiplier){
+        fireRate /= (multiplier);
+    }
+
     public int getHealthPoints(){
         return healthPoints;
     }

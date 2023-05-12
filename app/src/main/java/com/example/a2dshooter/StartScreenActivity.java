@@ -12,18 +12,23 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ToggleButton;
 
-public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener {
+import com.example.a2dshooter.utils.Constants;
+
+import java.io.Serializable;
+
+public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
     private ToggleButton tbButton1;
     private ToggleButton tbButton2;
     private ToggleButton tbButton3;
 
-    Intent intent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+
+        if(getSupportActionBar() != null)
+            getSupportActionBar().hide();
 
         Window window = getWindow();
         window.setFlags(
@@ -32,7 +37,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         );
 
         Button btnStart = findViewById(R.id.btn_start);
-        tbButton1 = findViewById(R.id.tv_button1);
+        tbButton1 = findViewById(R.id.tb_button1);
         tbButton2 = findViewById(R.id.tb_button2);
         tbButton3 = findViewById(R.id.tb_button3);
 
@@ -42,26 +47,27 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_start:
-                String gameMode = "EASY";
+                 Constants.gameMode = 1.0;
 
                 if(tbButton1.isChecked())
-                    gameMode = "EASY";
+                    Constants.gameMode = 1.0;
                 else if(tbButton2.isChecked())
-                    gameMode = "MEDIUM";
+                    Constants.gameMode = 1.5;
                 else if(tbButton3.isChecked())
-                    gameMode = "HARD";
-
-                intent.putExtra("GAME_MODE", gameMode);
+                    Constants.gameMode = 2;
 
                 Game game = new Game(this);
                 setContentView(game); //end activity?
+                //finish();
+
                 break;
-            case R.id.tv_button1:
+            case R.id.tb_button1:
                 tbButton1.setChecked(true);
                 tbButton2.setChecked(false);
                 tbButton3.setChecked(false);
