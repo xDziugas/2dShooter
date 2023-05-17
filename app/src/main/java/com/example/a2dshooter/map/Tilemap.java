@@ -12,6 +12,9 @@ import android.graphics.Rect;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.graphics.SpriteSheet;
 
+/**
+ * Initializes the map, responsible for drawing the map on the screen.
+ */
 
 public class Tilemap {
 
@@ -20,7 +23,7 @@ public class Tilemap {
     private final SpriteSheet spriteSheet;
     private Bitmap mapBitmap;
 
-    public Tilemap(SpriteSheet spriteSheet){
+    public Tilemap(SpriteSheet spriteSheet) {
         mapLayout = new MapLayout();
         this.spriteSheet = spriteSheet;
         initializeTilemap();
@@ -29,8 +32,8 @@ public class Tilemap {
     private void initializeTilemap() {
         int[][] layout = mapLayout.getLayout();
         tilemap = new Tile[MAP_ROWS][MAP_COLUMNS];
-        for(int row = 0; row < MAP_ROWS; row++){
-            for(int col = 0; col < MAP_COLUMNS; col++){
+        for (int row = 0; row < MAP_ROWS; row++) {
+            for (int col = 0; col < MAP_COLUMNS; col++) {
                 tilemap[row][col] = Tile.getTile(
                         layout[row][col],
                         spriteSheet,
@@ -47,14 +50,14 @@ public class Tilemap {
         );
 
         Canvas mapCanvas = new Canvas(mapBitmap);
-        for(int row = 0; row < MAP_ROWS; row++){
-            for(int col = 0; col < MAP_COLUMNS; col++){
+        for (int row = 0; row < MAP_ROWS; row++) {
+            for (int col = 0; col < MAP_COLUMNS; col++) {
                 tilemap[row][col].draw(mapCanvas);
             }
         }
     }
 
-    private Rect getRectByIndex(int indexRow, int indexCol){
+    private Rect getRectByIndex(int indexRow, int indexCol) {
         return new Rect(
                 indexCol * TILE_WIDTH, //tile width = 64
                 indexRow * TILE_HEIGHT, //height 64

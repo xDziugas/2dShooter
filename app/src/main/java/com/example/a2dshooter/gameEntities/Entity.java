@@ -10,6 +10,10 @@ import com.example.a2dshooter.GameCamera;
 
 import java.io.Serializable;
 
+/**
+ * Super class of all game entities. Contains directional and movement related fields.
+ */
+
 public abstract class Entity implements Serializable {
 
     public double positionX;
@@ -23,7 +27,7 @@ public abstract class Entity implements Serializable {
     public transient Paint paint;
     public transient Context context;
 
-    public Entity(Context context, int color, double positionX, double positionY, double radius){
+    public Entity(Context context, int color, double positionX, double positionY, double radius) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.radius = radius;
@@ -33,7 +37,7 @@ public abstract class Entity implements Serializable {
         paint.setColor(color);
     }
 
-    public Entity(Context context, int color, double radius){
+    public Entity(Context context, int color, double radius) {
         this.radius = radius;
         this.context = context;
 
@@ -41,7 +45,7 @@ public abstract class Entity implements Serializable {
         paint.setColor(color);
     }
 
-    public void draw(Canvas canvas, GameCamera gameCamera){
+    public void draw(Canvas canvas, GameCamera gameCamera) {
         canvas.drawCircle(
                 (float) gameCamera.gameNewX(positionX),
                 (float) gameCamera.gameNewY(positionY),
@@ -65,9 +69,13 @@ public abstract class Entity implements Serializable {
         positionY += velocityY;
     }
 
-    public double getPositionX() { return positionX; }
+    public double getPositionX() {
+        return positionX;
+    }
 
-    public double getPositionY() { return positionY; }
+    public double getPositionY() {
+        return positionY;
+    }
 
     public double getDirectionX() {
         return directionX;
@@ -77,7 +85,7 @@ public abstract class Entity implements Serializable {
         return directionY;
     }
 
-    public double getRadius(){
+    public double getRadius() {
         return radius;
     }
 

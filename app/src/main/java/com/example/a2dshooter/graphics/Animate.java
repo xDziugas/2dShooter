@@ -7,6 +7,10 @@ import com.example.a2dshooter.gameEntities.Player;
 
 import java.io.Serializable;
 
+/**
+ * Animator class, responsible for animation of game entities.
+ */
+
 public class Animate implements Serializable {
 
     private final Sprite[] playerSpriteArray;
@@ -20,7 +24,7 @@ public class Animate implements Serializable {
     }
 
     public void draw(Canvas canvas, GameCamera gameCamera, Player player) {
-        switch (player.getPlayerState().getState()){
+        switch (player.getPlayerState().getState()) {
             case IDLE:
                 drawFrame(canvas, gameCamera, player, playerSpriteArray[defaultFrame]);
 
@@ -32,7 +36,7 @@ public class Animate implements Serializable {
                 break;
             case IS_MOVING:
                 updatesBeforeNextFrame--;
-                if(updatesBeforeNextFrame <= 0){
+                if (updatesBeforeNextFrame <= 0) {
                     updatesBeforeNextFrame = UPDATES_TO_WAIT;
                     toggleStartMovingFrame();
                 }
@@ -46,13 +50,13 @@ public class Animate implements Serializable {
     }
 
     private void toggleStartMovingFrame() {
-        if(startMovingFrame < 3)
+        if (startMovingFrame < 3)
             startMovingFrame++;
         else
             startMovingFrame = 0;
     }
 
-    public void drawFrame(Canvas canvas, GameCamera gameCamera, Player player, Sprite sprite){
+    public void drawFrame(Canvas canvas, GameCamera gameCamera, Player player, Sprite sprite) {
         sprite.draw(
                 canvas,
                 (int) gameCamera.gameNewX(player.getPositionX()) - sprite.getWidth() / 2,

@@ -9,6 +9,12 @@ import com.example.a2dshooter.utils.DefaultValues;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * GameState - used when Saving the current game state
+ * to a file. Stores all Saved fields and initializes
+ * DefaultValues data class with all transient fields.
+ */
+
 public class GameState implements Serializable {
 
     public Player player;
@@ -21,7 +27,7 @@ public class GameState implements Serializable {
         this.enemies = enemies;
     }
 
-    public void update(Player player, ArrayList<Enemy> enemies){
+    public void update(Player player, ArrayList<Enemy> enemies) {
         this.defaultValues.update(player, enemies);
         this.player = player;
         this.enemies = enemies;
@@ -51,7 +57,7 @@ public class GameState implements Serializable {
         this.player.animator = defaultValues.playerAnimator;
         this.player.playerState = new PlayerState(player);
 
-        for(Bullet bullet : player.listOfBullets){
+        for (Bullet bullet : player.listOfBullets) {
             bullet.context = defaultValues.bulletContext;
             bullet.paint = defaultValues.bulletPaint;
         }

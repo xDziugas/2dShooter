@@ -2,12 +2,16 @@ package com.example.a2dshooter.utils;
 
 import com.example.a2dshooter.gameEntities.Entity;
 
+/**
+ * Util class, contains universal static methods used in the project.
+ */
+
 public class Util {
 
-    public static double getDistanceBetweenPoints(double p1X, double p1Y, double p2X, double p2Y){
+    public static double getDistanceBetweenPoints(double p1X, double p1Y, double p2X, double p2Y) {
         return Math.sqrt(
                 Math.pow(p2X - p1X, 2) +
-                Math.pow(p2Y - p1Y, 2)
+                        Math.pow(p2Y - p1Y, 2)
         );
     }
 

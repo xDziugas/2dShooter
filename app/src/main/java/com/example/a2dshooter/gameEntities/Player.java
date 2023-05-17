@@ -18,7 +18,11 @@ import com.example.a2dshooter.utils.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player extends Entity implements Serializable{
+/**
+ * Player - main Entity, controlled by a player using Joysticks.
+ */
+
+public class Player extends Entity implements Serializable {
 
     private int healthPoints;
     public HealthBar healthbar;
@@ -32,7 +36,7 @@ public class Player extends Entity implements Serializable{
     public transient PlayerState playerState;
     public transient Animate animator;
 
-    public Player(Context context, Joystick joystickMovement, Joystick joystickShoot, DisplayMetrics displayMetrics, int color, GameCamera gameCamera, Animate animator){
+    public Player(Context context, Joystick joystickMovement, Joystick joystickShoot, DisplayMetrics displayMetrics, int color, GameCamera gameCamera, Animate animator) {
         super(
                 context,
                 ContextCompat.getColor(context, R.color.player),
@@ -54,29 +58,29 @@ public class Player extends Entity implements Serializable{
         this.animator = animator;
     }
 
-    public void draw(Canvas canvas, GameCamera gameCamera){
+    public void draw(Canvas canvas, GameCamera gameCamera) {
         //super.draw(canvas, gameCamera);
         healthbar.draw(canvas, this.getHealthPoints());
         animator.draw(canvas, gameCamera, this);
     }
 
-    public void shoot(){
+    public void shoot() {
         listOfBullets.add(new Bullet(context, this, 1, Constants.MAX_BULLET_DAMAGE));
     }
 
-    public void moveBullets(){
-        for(Bullet bullet : listOfBullets){
+    public void moveBullets() {
+        for (Bullet bullet : listOfBullets) {
             bullet.move();
         }
     }
 
-    public void drawBullets(Canvas canvas, GameCamera gameCamera){
-        for(Bullet bullet : listOfBullets){
+    public void drawBullets(Canvas canvas, GameCamera gameCamera) {
+        for (Bullet bullet : listOfBullets) {
             bullet.draw(canvas, gameCamera);
         }
     }
 
-    public ArrayList<Bullet> getBullets(){
+    public ArrayList<Bullet> getBullets() {
         return this.listOfBullets;
     }
 
@@ -92,7 +96,7 @@ public class Player extends Entity implements Serializable{
         super.move();
 
         //update direction
-        if(facingX != 0 || facingY != 0){
+        if (facingX != 0 || facingY != 0) {
             double distance = Util.getDistanceBetweenPoints(0, 0, facingX, facingY);
             directionX = facingX / distance;
             directionY = facingY / distance;
@@ -106,23 +110,23 @@ public class Player extends Entity implements Serializable{
         fireRate *= 0.8;
     }
 
-    public void updateFireRate(double multiplier){
+    public void updateFireRate(double multiplier) {
         fireRate /= (multiplier);
     }
 
-    public int getHealthPoints(){
+    public int getHealthPoints() {
         return healthPoints;
     }
 
-    public void setHealthPoints(int healthPoints){
+    public void setHealthPoints(int healthPoints) {
         this.healthPoints = Math.max(healthPoints, 0);
     }
 
-    public boolean canShoot(){
+    public boolean canShoot() {
         return this.ableToShoot;
     }
 
-    public void setCanShoot(boolean ableToShoot){
+    public void setCanShoot(boolean ableToShoot) {
         this.ableToShoot = ableToShoot;
     }
 
@@ -130,11 +134,11 @@ public class Player extends Entity implements Serializable{
         return level;
     }
 
-    public int getFireRate(){
+    public int getFireRate() {
         return fireRate;
     }
 
-    public PlayerState getPlayerState(){
+    public PlayerState getPlayerState() {
         return playerState;
     }
 

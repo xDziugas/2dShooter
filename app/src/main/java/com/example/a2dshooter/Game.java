@@ -1,11 +1,8 @@
 package com.example.a2dshooter;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,7 +20,6 @@ import com.example.a2dshooter.GameStateManagement.LoadButton;
 import com.example.a2dshooter.GameStateManagement.SaveButton;
 import com.example.a2dshooter.gameEntities.Bullet;
 import com.example.a2dshooter.gameEntities.Enemy;
-import com.example.a2dshooter.gameEntities.Entity;
 import com.example.a2dshooter.gameEntities.Player;
 import com.example.a2dshooter.gamePanels.GameOver;
 import com.example.a2dshooter.gamePanels.Joystick;
@@ -43,6 +39,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+/**
+ * Main class, responsible in creating/drawing game objects and graphics.
+ */
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -73,7 +73,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final LoadButton loadButton;
 
     @SuppressLint("ResourceType")
-    public Game(Context context){
+    public Game(Context context) {
         super(context);
 
         //mb klase zinai? su default reiksmem ir td tsg setMode(easy) pvz
@@ -118,7 +118,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
         Log.d("Game", "surfaceCreated: ");
-        if(gameLoop.getState().equals(Thread.State.TERMINATED)){
+        if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
             gameLoop = new GameLoop(this, surfaceHolder);
         }
         gameLoop.startLoop();
@@ -126,7 +126,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        if(gameLoop.getState().equals(Thread.State.TERMINATED)){
+        if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
             gameLoop.stopLoop();
         }
     }
@@ -141,25 +141,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
 
         //handle touch event actions
-        switch (event.getActionMasked()){
+        switch (event.getActionMasked()) {
 
             case MotionEvent.ACTION_DOWN:
                 int ptrIdx1 = event.findPointerIndex(event.getPointerId(event.getActionIndex()));
 
-                if(joystickShoot.isPressed(event.getX(ptrIdx1), event.getY(ptrIdx1))){
+                if (joystickShoot.isPressed(event.getX(ptrIdx1), event.getY(ptrIdx1))) {
                     joystickShoot.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
                     joystickShoot.setIsPressed(true);
                     player.setCanShoot(true);
-                } else if(joystickMovement.isPressed(event.getX(ptrIdx1), event.getY(ptrIdx1))){
+                } else if (joystickMovement.isPressed(event.getX(ptrIdx1), event.getY(ptrIdx1))) {
                     joystickMovement.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
                     joystickMovement.setIsPressed(true);
                 }
 
-                if(saveButton.isPressed(event.getX(), event.getY())){
+                if (saveButton.isPressed(event.getX(), event.getY())) {
                     saveGame();
                 }
 
-                if(loadButton.isPressed(event.getX(), event.getY())){
+                if (loadButton.isPressed(event.getX(), event.getY())) {
                     loadGame();
                 }
 
@@ -169,37 +169,37 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
                 int ptrIdx2 = event.findPointerIndex(event.getPointerId(event.getActionIndex()));
 
-                if(joystickShoot.getIsPressed()){
-                    if(joystickMovement.isPressed(event.getX(ptrIdx2), event.getY(ptrIdx2))){
+                if (joystickShoot.getIsPressed()) {
+                    if (joystickMovement.isPressed(event.getX(ptrIdx2), event.getY(ptrIdx2))) {
                         joystickMovement.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
                         joystickMovement.setIsPressed(true);
                     }
-                }else if(joystickMovement.getIsPressed()){
-                    if(joystickShoot.isPressed(event.getX(ptrIdx2), event.getY(ptrIdx2))){
+                } else if (joystickMovement.getIsPressed()) {
+                    if (joystickShoot.isPressed(event.getX(ptrIdx2), event.getY(ptrIdx2))) {
                         joystickShoot.setJoystickPointerId(event.getPointerId(event.getActionIndex()));
                         joystickShoot.setIsPressed(true);
                         player.setCanShoot(true);
                     }
                 }
 
-                if(saveButton.isPressed(event.getX(), event.getY())){
+                if (saveButton.isPressed(event.getX(), event.getY())) {
                     saveGame();
                 }
 
-                if(loadButton.isPressed(event.getX(), event.getY())){
+                if (loadButton.isPressed(event.getX(), event.getY())) {
                     loadGame();
                 }
 
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                if(joystickMovement.getIsPressed()){
+                if (joystickMovement.getIsPressed()) {
                     int ptrIdx = event.findPointerIndex(joystickMovement.getJoystickPointerId());
 
                     joystickMovement.setActuator(event.getX(ptrIdx), event.getY(ptrIdx));
                 }
 
-                if(joystickShoot.getIsPressed()){
+                if (joystickShoot.getIsPressed()) {
                     int ptrIdx = event.findPointerIndex(joystickShoot.getJoystickPointerId());
 
                     joystickShoot.setActuator(event.getX(ptrIdx), event.getY(ptrIdx));
@@ -208,12 +208,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                if(joystickMovement.getJoystickPointerId() == event.getPointerId(event.getActionIndex())){
+                if (joystickMovement.getJoystickPointerId() == event.getPointerId(event.getActionIndex())) {
                     joystickMovement.setIsPressed(false);
                     joystickMovement.resetActuator();
                 }
 
-                if(joystickShoot.getJoystickPointerId() == event.getPointerId(event.getActionIndex())){
+                if (joystickShoot.getJoystickPointerId() == event.getPointerId(event.getActionIndex())) {
                     joystickShoot.setIsPressed(false);
                     joystickShoot.resetActuator();
                     player.setCanShoot(false);
@@ -225,8 +225,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void draw(Canvas canvas){
-        if(gameLoop.getState().equals(Thread.State.TERMINATED)){
+    public void draw(Canvas canvas) {
+        if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
             gameLoop.stopLoop();
         }
 
@@ -238,7 +238,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //draw game objects
         player.draw(canvas, gameCamera);
 
-        for(Enemy enemy : listOfEnemies){
+        for (Enemy enemy : listOfEnemies) {
             enemy.draw(canvas, gameCamera);
             enemy.drawMines(canvas, gameCamera);
         }
@@ -254,7 +254,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         saveButton.draw(canvas);
 
-        if(player.getHealthPoints() <= 0){
+        if (player.getHealthPoints() <= 0) {
             gameOver.draw(canvas);
         }
 
@@ -263,7 +263,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
 
-        if(player.getHealthPoints() <= 0){
+        if (player.getHealthPoints() <= 0) {
             return;
         }
 
@@ -273,28 +273,28 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player.move();
 
-        if(framesToWaitPlayer <= 0){
-            if(player.canShoot()){
+        if (framesToWaitPlayer <= 0) {
+            if (player.canShoot()) {
                 player.shoot();
             }
 
             framesToWaitPlayer += player.getFireRate();
-        }else{
+        } else {
             framesToWaitPlayer--;
         }
 
-        if(framesToWaitEnemy <= 0){
-            for(Enemy enemy : listOfEnemies){
+        if (framesToWaitEnemy <= 0) {
+            for (Enemy enemy : listOfEnemies) {
                 enemy.placeMine();
             }
 
             framesToWaitEnemy += (framesToWaitMax + 20);
             listOfEnemies.add(new Enemy(getContext(), player, displayMetrics, gameCamera));
-        }else{
+        } else {
             framesToWaitEnemy--;
         }
 
-        for(Enemy enemy : listOfEnemies){
+        for (Enemy enemy : listOfEnemies) {
             enemy.move();
         }
 
@@ -302,7 +302,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //collisions
         Iterator<Enemy> iteratorEnemy = listOfEnemies.iterator();
-        while(iteratorEnemy.hasNext()) {
+        while (iteratorEnemy.hasNext()) {
             Enemy enemy = iteratorEnemy.next();
             if (Util.isColliding(enemy, player)) {
                 iteratorEnemy.remove();
@@ -311,11 +311,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             Iterator<Bullet> bulletIterator = player.getBullets().iterator();
-            while(bulletIterator.hasNext()){
+            while (bulletIterator.hasNext()) {
                 Bullet bullet = bulletIterator.next();
-                if(Util.isColliding(bullet, enemy)){
+                if (Util.isColliding(bullet, enemy)) {
                     enemy.setHealthPoints(enemy.getHealthPoints() - bullet.getDamage());
-                    if(enemy.getHealthPoints() <= 0){
+                    if (enemy.getHealthPoints() <= 0) {
                         xpBar.setCurrentXp(xpBar.getCurrentXp() + enemy.getXpOnKill());
                         iteratorEnemy.remove();
                     }
@@ -323,15 +323,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     break;
                 }
 
-                if(Util.getDistanceBetweenObjects(bullet, player) > (double) displayMetrics.widthPixels / 2 + 100){
+                if (Util.getDistanceBetweenObjects(bullet, player) > (double) displayMetrics.widthPixels / 2 + 100) {
                     bulletIterator.remove();
                 }
             }
 
             bulletIterator = enemy.getMines().iterator();
-            while(bulletIterator.hasNext()){
+            while (bulletIterator.hasNext()) {
                 Bullet bullet = bulletIterator.next();
-                if(Util.isColliding(bullet, player)){
+                if (Util.isColliding(bullet, player)) {
 
                     bulletIterator.remove();
                     player.setHealthPoints(player.getHealthPoints() - bullet.getDamage());
@@ -343,14 +343,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameCamera.update(player.getPositionX(), player.getPositionY());
     }
 
-    public void saveGame(){
+    public void saveGame() {
         gameState.update(player, listOfEnemies);
 
         new Thread(() -> {
 
             File file = new File(context.getFilesDir(), "gameState_data.bin");
-            try{
-                if(!file.exists()){
+            try {
+                if (!file.exists()) {
                     file.createNewFile();
                 }
 
@@ -362,7 +362,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
                 objectOut.flush();
                 objectOut.close();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
@@ -386,13 +386,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     gameState.update(newGameState);
                     updateGameState(gameState);
                 });
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
     }
 
-    private void updateGameState(GameState gameState){
+    private void updateGameState(GameState gameState) {
         player = gameState.getPlayer();
         listOfEnemies = gameState.getEnemies();
     }

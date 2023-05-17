@@ -1,10 +1,6 @@
 package com.example.a2dshooter;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -12,9 +8,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ToggleButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.a2dshooter.utils.Constants;
 
 import java.io.Serializable;
+
+/**
+ * Starting screen activity, contains UI elements
+ */
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
@@ -27,7 +29,7 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
-        if(getSupportActionBar() != null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
         Window window = getWindow();
@@ -51,15 +53,15 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_start:
-                 Constants.gameMode = 1.0;
+                Constants.gameMode = 1.0;
 
-                if(tbButton1.isChecked())
+                if (tbButton1.isChecked())
                     Constants.gameMode = 1.0;
-                else if(tbButton2.isChecked())
+                else if (tbButton2.isChecked())
                     Constants.gameMode = 1.5;
-                else if(tbButton3.isChecked())
+                else if (tbButton3.isChecked())
                     Constants.gameMode = 2;
 
                 Game game = new Game(this);

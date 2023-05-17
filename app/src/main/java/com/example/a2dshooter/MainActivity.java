@@ -1,16 +1,19 @@
 package com.example.a2dshooter;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.a2dshooter.utils.Constants;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.Serializable;
+
+/**
+ * @author Dziugas Budreika
+ * info
+ * Main activity
+ */
 
 public class MainActivity extends AppCompatActivity implements Serializable {
 

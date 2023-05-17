@@ -12,6 +12,11 @@ import com.example.a2dshooter.gameEntities.Entity;
 
 import java.io.Serializable;
 
+/**
+ * UI element, hovers above entities. Shows
+ * information regarding entities' health points.
+ */
+
 public class HealthBar implements Serializable {
 
     public transient Paint borderPaint;
@@ -22,7 +27,7 @@ public class HealthBar implements Serializable {
     public transient GameCamera gameCamera;
 
 
-    public HealthBar(Context context, Entity entity, int max_health, GameCamera gameCamera){
+    public HealthBar(Context context, Entity entity, int max_health, GameCamera gameCamera) {
         this.entity = entity;
         this.width = 100;
         this.height = 20;
@@ -42,7 +47,7 @@ public class HealthBar implements Serializable {
         healthPaint.setColor(healthColor);
     }
 
-    public void draw(Canvas canvas, int current_health){
+    public void draw(Canvas canvas, int current_health) {
         float x = (float) entity.getPositionX();
         float y = (float) entity.getPositionY();
         float distanceToPlayer = 62;

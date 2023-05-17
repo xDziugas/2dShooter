@@ -7,6 +7,11 @@ import android.util.DisplayMetrics;
 
 import com.example.a2dshooter.gameEntities.Player;
 
+/**
+ * UI element. Shows information regarding
+ * Player's current XP points, and road until the next level.
+ */
+
 public class XpBar {
 
     private final DisplayMetrics displayMetrics;
@@ -20,7 +25,7 @@ public class XpBar {
     private float currentXp = 0;
     private final Player player;
 
-    public XpBar(DisplayMetrics displayMetrics, Player player){
+    public XpBar(DisplayMetrics displayMetrics, Player player) {
         this.displayMetrics = displayMetrics;
 
         this.xpPaint = new Paint();
@@ -59,9 +64,9 @@ public class XpBar {
         float XpLeft, XpTop, XpRight, XpBottom, XpLength, XpWidth;
         float currentXpPercentage = currentXp / maxXp[player.getLevel()];
 
-        if(currentXp >= maxXp[player.getLevel()]){
+        if (currentXp >= maxXp[player.getLevel()]) {
             currentXp -= maxXp[player.getLevel()];
-            if(player.getLevel() < maxXp.length - 1){
+            if (player.getLevel() < maxXp.length - 1) {
                 player.incLevel();
             }
         }
@@ -93,7 +98,7 @@ public class XpBar {
         this.currentXp = currentXp;
     }
 
-    public float[] getXpRequirements(){
+    public float[] getXpRequirements() {
         return this.maxXp;
     }
 

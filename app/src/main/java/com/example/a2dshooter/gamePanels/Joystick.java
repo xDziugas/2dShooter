@@ -8,6 +8,10 @@ import com.example.a2dshooter.utils.Util;
 
 import java.io.Serializable;
 
+/**
+ * UI element. Used for controlling Player movement and shooting.
+ */
+
 public class Joystick implements Serializable {
 
     private final int innerCircleRadius;
@@ -24,7 +28,7 @@ public class Joystick implements Serializable {
     private double actuatorY;
     private int joystickPointerId = 0;
 
-    public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
+    public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius) {
 
         outerCircleCenterPositionX = centerPositionX;
         outerCircleCenterPositionY = centerPositionY;
@@ -96,10 +100,10 @@ public class Joystick implements Serializable {
         double deltaY = touchPositionY - outerCircleCenterPositionY;
         double deltaDistance = Util.getDistanceBetweenPoints(0, 0, deltaX, deltaY);
 
-        if(deltaDistance < outerCircleRadius){
+        if (deltaDistance < outerCircleRadius) {
             actuatorX = deltaX / outerCircleRadius;
             actuatorY = deltaY / outerCircleRadius;
-        }else{
+        } else {
             actuatorX = deltaX / deltaDistance;
             actuatorY = deltaY / deltaDistance;
         }
@@ -110,11 +114,11 @@ public class Joystick implements Serializable {
         actuatorY = 0.0;
     }
 
-    public int getJoystickPointerId(){
+    public int getJoystickPointerId() {
         return joystickPointerId;
     }
 
-    public void setJoystickPointerId(int joystickPointerId){
+    public void setJoystickPointerId(int joystickPointerId) {
         this.joystickPointerId = joystickPointerId;
     }
 

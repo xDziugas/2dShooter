@@ -9,6 +9,10 @@ import androidx.core.content.ContextCompat;
 import com.example.a2dshooter.GameLoop;
 import com.example.a2dshooter.R;
 
+/**
+ * UI element. Draws current FPS on the screen. Calculated in GameLoop.
+ */
+
 public class RefreshRates {
 
     private final GameLoop gameLoop;
@@ -19,11 +23,11 @@ public class RefreshRates {
         this.gameLoop = gameLoop;
     }
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
         drawFPS(canvas);
     }
 
-    public void drawFPS(Canvas canvas){
+    public void drawFPS(Canvas canvas) {
         String averageFPS = Double.toString((int) gameLoop.getAverageFPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);

@@ -3,6 +3,10 @@ package com.example.a2dshooter.graphics;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+/**
+ * Draws a frame on the screen. Used with Animator.
+ */
+
 public class Sprite {
 
 
@@ -18,7 +22,7 @@ public class Sprite {
         canvas.drawBitmap(
                 spriteSheet.getBitmap(),
                 rect,
-                new Rect(x-32, y-32, x + getWidth() + 32, y + getHeight() + 32),
+                new Rect(x - 32, y - 32, x + getWidth() + 32, y + getHeight() + 32),
                 null
         );
     }

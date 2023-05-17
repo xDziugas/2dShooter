@@ -2,22 +2,27 @@ package com.example.a2dshooter.map;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+
 import com.example.a2dshooter.graphics.SpriteSheet;
+
+/**
+ * Controller class for returning different tiles. Factory design pattern.
+ */
 
 public abstract class Tile {
 
     protected final Rect mapLocationRect;
 
-    public enum TileType{
+    public enum TileType {
         GRASS, LAVA, SQUARES, RED, WATER, EYE
     }
 
-    public Tile(Rect mapLocationRect){
+    public Tile(Rect mapLocationRect) {
         this.mapLocationRect = mapLocationRect;
     }
 
-    public static Tile getTile(int indexTile, SpriteSheet spriteSheet, Rect mapLocationRect){
-        switch (TileType.values() [indexTile]){
+    public static Tile getTile(int indexTile, SpriteSheet spriteSheet, Rect mapLocationRect) {
+        switch (TileType.values()[indexTile]) {
             case GRASS:
                 return new GrassTile(spriteSheet, mapLocationRect);
             case LAVA:

@@ -5,6 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 
+/**
+ * UI element, Button. OnPress Loads saved GameState from a file and updates the game.
+ */
+
 public class LoadButton {
     private final DisplayMetrics displayMetrics;
     private final Paint buttonPaint;
@@ -14,7 +18,7 @@ public class LoadButton {
     private final float buttonWidth = 150;
     float borderLeft, borderTop, borderRight, borderBottom;
 
-    public LoadButton(DisplayMetrics displayMetrics){
+    public LoadButton(DisplayMetrics displayMetrics) {
         this.displayMetrics = displayMetrics;
 
         this.borderPaint = new Paint();
@@ -61,7 +65,7 @@ public class LoadButton {
         canvas.drawText("Load", borderLeft, borderBottom + 25, buttonPaint);
     }
 
-    public boolean isPressed(float x, float y){
+    public boolean isPressed(float x, float y) {
         return x > borderLeft && x < borderRight && y > borderTop && y < borderBottom;
     }
 

@@ -6,16 +6,20 @@ import android.util.DisplayMetrics;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.R;
 import com.example.a2dshooter.gamePanels.HealthBar;
+import com.example.a2dshooter.utils.Constants;
 import com.example.a2dshooter.utils.Util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Enemy extends Entity implements Serializable{
+/**
+ * Enemy - main Entity, player's target. Gives XP points on kill, gives damage on hit.
+ */
+
+public class Enemy extends Entity implements Serializable {
 
     private static final double framesUntilSpawnMax = 60 / (Constants.SPAWNS_PER_MINUTE / 60.0);
     private static double framesUntilSpawn = framesUntilSpawnMax;
@@ -28,7 +32,7 @@ public class Enemy extends Entity implements Serializable{
     public transient DisplayMetrics displayMetrics;
     private final int xpOnKill = Constants.XP_ON_KILL_ENEMY;
 
-    public Enemy(Context context, Player player, DisplayMetrics displayMetrics, GameCamera gameCamera){
+    public Enemy(Context context, Player player, DisplayMetrics displayMetrics, GameCamera gameCamera) {
         super(
                 context,
                 ContextCompat.getColor(context, R.color.enemy),
@@ -49,7 +53,7 @@ public class Enemy extends Entity implements Serializable{
         this.healthbar = new HealthBar(context, this, Constants.MAX_HEALTH_POINTS_ENEMY, gameCamera);
     }
 
-    public void draw(Canvas canvas, GameCamera gameCamera){
+    public void draw(Canvas canvas, GameCamera gameCamera) {
         super.draw(canvas, gameCamera);
         healthbar.draw(canvas, this.getHealthPoints());
     }
@@ -68,10 +72,10 @@ public class Enemy extends Entity implements Serializable{
         double directionY = distanceToPlayerY / distanceToPlayer;
 
         //set velocity
-        if(distanceToPlayer > 0){
+        if (distanceToPlayer > 0) {
             velocityX = directionX * Constants.MAX_SPEED_PER_FRAME_ENEMY;
             velocityY = directionY * Constants.MAX_SPEED_PER_FRAME_ENEMY;
-        }else{
+        } else {
             velocityX = 0;
             velocityY = 0;
         }
@@ -79,7 +83,7 @@ public class Enemy extends Entity implements Serializable{
         //update the position of the enemy
         super.move();
 
-        if(Util.isColliding(this, player)){
+        if (Util.isColliding(this, player)) {
             setAlive(false);
         }
     }
@@ -93,34 +97,34 @@ public class Enemy extends Entity implements Serializable{
     }
 
     public static boolean readyToSpawn() {
-        if(framesUntilSpawn <= 0){
+        if (framesUntilSpawn <= 0) {
             framesUntilSpawn += framesUntilSpawnMax;
             return true;
-        } else{
+        } else {
             framesUntilSpawn--;
             return false;
         }
     }
 
-    public void placeMine(){
+    public void placeMine() {
         listOfMines.add(new Bullet(context, this, 0, Constants.MAX_MINE_DAMAGE));
     }
 
-    public void drawMines(Canvas canvas, GameCamera gameCamera){
-        for(Bullet bullet : listOfMines){
+    public void drawMines(Canvas canvas, GameCamera gameCamera) {
+        for (Bullet bullet : listOfMines) {
             bullet.draw(canvas, gameCamera);
         }
     }
 
-    public int getXpOnKill(){
+    public int getXpOnKill() {
         return this.xpOnKill;
     }
 
-    public double getSpawnPositionX(){
+    public double getSpawnPositionX() {
         return (Math.random() * 2 - 1) * ((double) (displayMetrics.widthPixels / 2) + Constants.ENEMY_SPAWN_POSITION_OFFSET);
     }
 
-    public double getSpawnPositionY(double positionX){
+    public double getSpawnPositionY(double positionX) {
         double radiusSquared = ((double) displayMetrics.widthPixels +
                 Constants.ENEMY_SPAWN_POSITION_OFFSET) * ((double) displayMetrics.widthPixels +
                 Constants.ENEMY_SPAWN_POSITION_OFFSET) / 4;
@@ -132,15 +136,15 @@ public class Enemy extends Entity implements Serializable{
         return Math.sqrt(radiusSquared - xSquared) * plusMinusOne;
     }
 
-    public ArrayList<Bullet> getMines(){
+    public ArrayList<Bullet> getMines() {
         return this.listOfMines;
     }
 
-    public int getHealthPoints(){
+    public int getHealthPoints() {
         return healthPoints;
     }
 
-    public void setHealthPoints(int healthPoints){
+    public void setHealthPoints(int healthPoints) {
         this.healthPoints = Math.max(0, healthPoints);
     }
 }

@@ -8,11 +8,15 @@ import androidx.core.content.ContextCompat;
 
 import com.example.a2dshooter.R;
 
+/**
+ * Screen, shown after player's health went to 0.
+ */
+
 public class GameOver {
 
     private final Context context;
 
-    public GameOver(Context context){
+    public GameOver(Context context) {
         this.context = context;
     }
 

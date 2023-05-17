@@ -7,21 +7,25 @@ import android.graphics.Rect;
 
 import com.example.a2dshooter.R;
 
+/**
+ * Contains a SpriteSheet with all the needed frames for animating game objects.
+ */
+
 public class SpriteSheet {
     private final Bitmap bitmap;
 
-    public SpriteSheet(Context context){
+    public SpriteSheet(Context context) {
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false; //?
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sprite_sheet, bitmapOptions);
     }
 
-    public Sprite[] getPlayerSpriteArray(){
+    public Sprite[] getPlayerSpriteArray() {
         Sprite[] spriteArray = new Sprite[4];
         spriteArray[0] = new Sprite(this, new Rect(0, 0, 64, 64));
-        spriteArray[1] = new Sprite(this, new Rect(64, 0, 2*64, 64));
-        spriteArray[2] = new Sprite(this, new Rect(2*64, 0, 3*64, 64));
-        spriteArray[3] = new Sprite(this, new Rect(3*64, 0, 4*64, 64));
+        spriteArray[1] = new Sprite(this, new Rect(64, 0, 2 * 64, 64));
+        spriteArray[2] = new Sprite(this, new Rect(2 * 64, 0, 3 * 64, 64));
+        spriteArray[3] = new Sprite(this, new Rect(3 * 64, 0, 4 * 64, 64));
 
         return spriteArray;
     }
@@ -31,7 +35,7 @@ public class SpriteSheet {
         return bitmap;
     }
 
-    private Sprite getSpriteByIndex(int indexRow, int indexCol){
+    private Sprite getSpriteByIndex(int indexRow, int indexCol) {
         return new Sprite(this, new Rect(
                 indexCol * 64, //sprite width = 64
                 indexRow * 64, //height 64

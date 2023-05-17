@@ -1,8 +1,11 @@
 package com.example.a2dshooter.utils;
 
-import android.content.Context;
-
 import com.example.a2dshooter.GameLoop;
+
+/**
+ * Data class, contains game constants.
+ * Values depend on the chosen difficulty of the game in StartingScreen.
+ */
 
 public class Constants {
     static public double SPAWNS_PER_MINUTE = 20;
@@ -21,7 +24,7 @@ public class Constants {
     static public int XP_ON_KILL_ENEMY = 50;
     public static double gameMode = 1;
 
-    static public void updateGameValues(double multiplier){
+    static public void updateGameValues(double multiplier) {
         SPAWNS_PER_MINUTE *= multiplier;
         MAX_MINE_DAMAGE *= multiplier;
         MAX_HEALTH_POINTS_ENEMY *= multiplier;

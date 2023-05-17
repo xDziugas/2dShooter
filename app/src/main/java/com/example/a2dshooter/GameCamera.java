@@ -2,7 +2,9 @@ package com.example.a2dshooter;
 
 import android.graphics.Rect;
 
-import java.io.Serializable;
+/**
+ * Game camera, contains methods to keep player in the center of the screen
+ */
 
 public class GameCamera {
 

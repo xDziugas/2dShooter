@@ -5,6 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 
+/**
+ * UI element, Button. OnPress saves the current GameState to a file.
+ */
+
 public class SaveButton {
     private final DisplayMetrics displayMetrics;
     private final Paint buttonPaint;
@@ -14,7 +18,7 @@ public class SaveButton {
     private final float buttonWidth = 150;
     float borderLeft, borderTop, borderRight, borderBottom;
 
-    public SaveButton(DisplayMetrics displayMetrics){
+    public SaveButton(DisplayMetrics displayMetrics) {
         this.displayMetrics = displayMetrics;
 
         this.borderPaint = new Paint();
@@ -61,7 +65,7 @@ public class SaveButton {
         canvas.drawText("Save", borderLeft, borderBottom + 25, buttonPaint);
     }
 
-    public boolean isPressed(float x, float y){
+    public boolean isPressed(float x, float y) {
         return x > borderLeft && x < borderRight && y > borderTop && y < borderBottom;
     }
 

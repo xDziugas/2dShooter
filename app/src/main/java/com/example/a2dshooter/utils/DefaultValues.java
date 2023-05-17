@@ -1,11 +1,8 @@
 package com.example.a2dshooter.utils;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.example.a2dshooter.GameCamera;
 import com.example.a2dshooter.gameEntities.Enemy;
@@ -16,6 +13,11 @@ import com.example.a2dshooter.gamePanels.Joystick;
 import com.example.a2dshooter.graphics.Animate;
 
 import java.util.ArrayList;
+
+/**
+ * Data class, contains information about the default
+ * values of all game objects. Used when saving/loading game state.
+ */
 
 public class DefaultValues {
 
@@ -45,7 +47,7 @@ public class DefaultValues {
     public Paint enemyPaint;
     public Context enemyContext;
 
-    public DefaultValues(Player player, ArrayList<Enemy> enemies){
+    public DefaultValues(Player player, ArrayList<Enemy> enemies) {
         update(player, enemies);
     }
 
@@ -64,19 +66,19 @@ public class DefaultValues {
         this.joystickShoot = player.joystickShoot;
         this.playerAnimator = player.animator;
 
-        if(!player.listOfBullets.isEmpty()){
+        if (!player.listOfBullets.isEmpty()) {
             this.bulletContext = player.listOfBullets.get(0).context;
             this.bulletPaint = player.listOfBullets.get(0).paint;
         }
 
         enemyHealthBar = new ArrayList<>();
 
-        for(int i = 0; i < enemies.size(); i++){
+        for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
             enemyHealthBar.add(enemy.healthbar);
         }
 
-        if(!enemies.isEmpty()){
+        if (!enemies.isEmpty()) {
             this.enemyDisplayMetrics = enemies.get(0).displayMetrics;
             this.enemyPaint = enemies.get(0).paint;
             this.enemyContext = enemies.get(0).context;
