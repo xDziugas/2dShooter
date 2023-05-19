@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ToggleButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,9 +21,9 @@ import java.io.Serializable;
 
 public class StartScreenActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
-    private ToggleButton tbButton1;
-    private ToggleButton tbButton2;
-    private ToggleButton tbButton3;
+    private SeekBar seekBar;
+    private TextView tvDiff;
+    final String[] diff = {"EASY", "MEDIUM", "HARD"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +40,30 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
         );
 
         Button btnStart = findViewById(R.id.btn_start);
-        tbButton1 = findViewById(R.id.tb_button1);
-        tbButton2 = findViewById(R.id.tb_button2);
-        tbButton3 = findViewById(R.id.tb_button3);
+        tvDiff = findViewById(R.id.TV_diff);
 
-        tbButton1.setChecked(true);
+        seekBar = findViewById(R.id.SB_difficulty);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvDiff.setText(diff[seekBar.getProgress() - 1]);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         btnStart.setOnClickListener(this);
+        tvDiff.setOnClickListener(this);
 
     }
 
@@ -53,37 +71,28 @@ public class StartScreenActivity extends AppCompatActivity implements View.OnCli
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_start:
+        if (v.getId() == R.id.btn_start) {
+            Constants.gameMode = 1.0;
+
+            if (seekBar.getProgress() == 1)
                 Constants.gameMode = 1.0;
+            else if (seekBar.getProgress() == 2)
+                Constants.gameMode = 1.5;
+            else if (seekBar.getProgress() == 3)
+                Constants.gameMode = 2;
 
-                if (tbButton1.isChecked())
-                    Constants.gameMode = 1.0;
-                else if (tbButton2.isChecked())
-                    Constants.gameMode = 1.5;
-                else if (tbButton3.isChecked())
-                    Constants.gameMode = 2;
-
-                Game game = new Game(this);
-                setContentView(game); //end activity?
-                //finish();
-
-                break;
-            case R.id.tb_button1:
-                tbButton1.setChecked(true);
-                tbButton2.setChecked(false);
-                tbButton3.setChecked(false);
-                break;
-            case R.id.tb_button2:
-                tbButton1.setChecked(false);
-                tbButton2.setChecked(true);
-                tbButton3.setChecked(false);
-                break;
-            case R.id.tb_button3:
-                tbButton1.setChecked(false);
-                tbButton2.setChecked(false);
-                tbButton3.setChecked(true);
-                break;
+            Game game = new Game(this);
+            setContentView(game); //end activity?
+            //finish();
+        }
+        if (v.getId() == R.id.TV_diff) {
+            if (seekBar.getProgress() + 1 <= seekBar.getMax()) {
+                tvDiff.setText(diff[seekBar.getProgress()]);
+                seekBar.setProgress(seekBar.getProgress() + 1);
+            } else {
+                tvDiff.setText(diff[0]);
+                seekBar.setProgress(1);
+            }
         }
     }
 }
